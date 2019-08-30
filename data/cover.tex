@@ -14,14 +14,13 @@
   %=========
   % 中文信息
   %=========
-  ctitle={清华大学学位论文 \LaTeX\ 模板\\使用示例文档 v\version},
+  ctitle={基于非监督学习的视觉里程计\\阶段研究报告 v\version},
   cdegree={工学硕士},
   cdepartment={计算机科学与技术系},
   cmajor={计算机科学与技术},
-  cauthor={薛瑞尼},
-  csupervisor={郑纬民教授},
-  cassosupervisor={陈文光教授}, % 副指导老师
-  ccosupervisor={某某某教授}, % 联合指导老师
+  cauthor={霍江浩},
+  csupervisor={宋亦旭},
+  ccosupervisor={郭岚}, % 联合指导老师
   % 日期自动使用当前时间，若需指定按如下方式修改：
   % cdate={超新星纪元},
   %
@@ -30,15 +29,15 @@
   udc               = {UDC},  % 可以留空
   id                = {编号},  % 可以留空： id={},
   cfirstdiscipline  = {计算机科学与技术},  % 流动站（一级学科）名称
-  cseconddiscipline = {系统结构},  % 专 业（二级学科）名称
-  postdoctordate    = {2009 年 7 月——2011 年 7 月},  % 工作完成日期
-  postdocstartdate  = {2009 年 7 月 1 日},  % 研究工作起始时间
-  postdocenddate    = {2011 年 7 月 1 日},  % 研究工作期满时间
+  cseconddiscipline = {深度学习},  % 专 业（二级学科）名称
+  postdoctordate    = {2019 年 7 月——2019 年 8 月},  % 工作完成日期
+  postdocstartdate  = {2019 年 7 月 10 日},  % 研究工作起始时间
+  postdocenddate    = {2019 年 8 月 31 日},  % 研究工作期满时间
   %
   %=========
   % 英文信息
   %=========
-  etitle={An Introduction to \LaTeX{} Thesis Template of Tsinghua University v\version},
+  etitle={Unsupervised Learning based Visual Odometry Research v\version},
   % 这块比较复杂，需要分情况讨论：
   % 1. 学术型硕士
   %    edegree：必须为Master of Arts或Master of Science（注意大小写）
@@ -63,33 +62,22 @@
   % edate={December, 2005},
   %
   % 关键词用“英文逗号”分割
-  ckeywords={TeX, LaTeX, CJK, 模板, 论文},
+  ckeywords={SLAM, 非监督学习, 深度学习, 视觉里程计},
   ekeywords={TeX, LaTeX, CJK, template, thesis}
 }
 
 % 定义中英文摘要和关键字
 \begin{cabstract}
-  论文的摘要是对论文研究内容和成果的高度概括。摘要应对论文所研究的问题及其研究目
-  的进行描述，对研究方法和过程进行简单介绍，对研究成果和所得结论进行概括。摘要应
-  具有独立性和自明性，其内容应包含与论文全文同等量的主要信息。使读者即使不阅读全
-  文，通过摘要就能了解论文的总体内容和主要成果。
 
-  论文摘要的书写应力求精确、简明。切忌写成对论文书写内容进行提要的形式，尤其要避
-  免“第 1 章……；第 2 章……；……”这种或类似的陈述方式。
+  即时定位建图技术（SLAM）通过特定的传感器完成实时的定位、建图任务，在机器人研究
+  领域一直有着重要的地位，是机器人完成复杂任务的基石。传统SLAM算法主要依赖激光雷达
+  或者单目双目摄像头，基于滤波或者优化算法完成定位和建图任务。
+  
+  近些年来，随着深度学习的兴起，SLAM领域的研究前沿开始逐渐使用深度学习方法进行探索，
+  同传统算法相比，深度学习方法鲁棒性强、配置简单、代码量小并且易于理解。本文根据领域
+  内已有的成果，进一步探索了非监督学习的视觉SLAM技术，提出一种基于单目且有绝对尺度
+  的非监督slam网络，具体的分析了该网络的各项技术设计，并且给出了阶段性的实验成果。
 
-  本文介绍清华大学论文模板 \thuthesis{} 的使用方法。本模板符合学校的本科、硕士、
-  博士论文格式要求。
-
-  本文的创新点主要有：
-  \begin{itemize}
-    \item 用例子来解释模板的使用方法；
-    \item 用废话来填充无关紧要的部分；
-    \item 一边学习摸索一边编写新代码。
-  \end{itemize}
-
-  关键词是为了文献标引工作、用以表示全文主要内容信息的单词或术语。关键词不超过 5
-  个，每个关键词中间用分号分隔。（模板作者注：关键词分隔符不用考虑，模板会自动处
-  理。英文关键词同理。）
 \end{cabstract}
 
 % 如果习惯关键字跟在摘要文字后面，可以用直接命令来设置，如下：
