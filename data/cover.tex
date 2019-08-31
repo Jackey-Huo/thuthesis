@@ -14,7 +14,7 @@
   %=========
   % 中文信息
   %=========
-  ctitle={基于非监督学习的视觉里程计\\阶段研究报告 v\version},
+  ctitle={基于非监督学习的视觉里程计\\阶段研究报告},
   cdegree={工学硕士},
   cdepartment={计算机科学与技术系},
   cmajor={计算机科学与技术},
@@ -25,19 +25,19 @@
   % cdate={超新星纪元},
   %
   % 博士后专有部分
-  catalognumber     = {分类号},  % 可以留空
-  udc               = {UDC},  % 可以留空
-  id                = {编号},  % 可以留空： id={},
-  cfirstdiscipline  = {计算机科学与技术},  % 流动站（一级学科）名称
-  cseconddiscipline = {深度学习},  % 专 业（二级学科）名称
-  postdoctordate    = {2019 年 7 月——2019 年 8 月},  % 工作完成日期
-  postdocstartdate  = {2019 年 7 月 10 日},  % 研究工作起始时间
-  postdocenddate    = {2019 年 8 月 31 日},  % 研究工作期满时间
+  %catalognumber     = {分类号},  % 可以留空
+  %udc               = {UDC},  % 可以留空
+  %id                = {编号},  % 可以留空： id={},
+  %cfirstdiscipline  = {计算机科学与技术},  % 流动站（一级学科）名称
+  %cseconddiscipline = {深度学习},  % 专 业（二级学科）名称
+  %postdoctordate    = {2019 年 7 月——2019 年 8 月},  % 工作完成日期
+  %postdocstartdate  = {2019 年 7 月 10 日},  % 研究工作起始时间
+  %postdocenddate    = {2019 年 8 月 31 日},  % 研究工作期满时间
   %
   %=========
   % 英文信息
   %=========
-  etitle={Unsupervised Learning based Visual Odometry Research v\version},
+  etitle={Unsupervised Learning based Visual Odometry Research},
   % 这块比较复杂，需要分情况讨论：
   % 1. 学术型硕士
   %    edegree：必须为Master of Arts或Master of Science（注意大小写）
@@ -53,30 +53,31 @@
   % 4. 专业型博士
   %    edegree：“填写专业学位英文名称全称”
   %    emajor：不填写此项
-  edegree={Doctor of Engineering},
-  emajor={Computer Science and Technology},
-  eauthor={Xue Ruini},
-  esupervisor={Professor Zheng Weimin},
-  eassosupervisor={Chen Wenguang},
+  %edegree={Doctor of Engineering},
+  %emajor={Computer Science and Technology},
+  %eauthor={Xue Ruini},
+  %esupervisor={Professor Zheng Weimin},
+  %eassosupervisor={Chen Wenguang},
   % 日期自动生成，若需指定按如下方式修改：
   % edate={December, 2005},
   %
   % 关键词用“英文逗号”分割
   ckeywords={SLAM, 非监督学习, 深度学习, 视觉里程计},
-  ekeywords={TeX, LaTeX, CJK, template, thesis}
+  %ekeywords={TeX, LaTeX, CJK, template, thesis}
 }
 
 % 定义中英文摘要和关键字
 \begin{cabstract}
 
   即时定位建图技术（SLAM）通过特定的传感器完成实时的定位、建图任务，在机器人研究
-  领域一直有着重要的地位，是机器人完成复杂任务的基石。传统SLAM算法主要依赖激光雷达
-  或者单目双目摄像头，基于滤波或者优化算法完成定位和建图任务。
+  领域一直有着重要的地位，是机器人完成复杂任务的基石，视觉里程计(VO)作为SLAM的重要分支
+  在机器人领域也占有着重要的地位。传统VO算法主要依赖激光雷达或者单目双目摄像头，基于滤波
+  或者优化算法完成定位任务。
   
   近些年来，随着深度学习的兴起，SLAM领域的研究前沿开始逐渐使用深度学习方法进行探索，
   同传统算法相比，深度学习方法鲁棒性强、配置简单、代码量小并且易于理解。本文根据领域
-  内已有的成果，进一步探索了非监督学习的视觉SLAM技术，提出一种基于单目且有绝对尺度
-  的非监督slam网络，具体的分析了该网络的各项技术设计，并且给出了阶段性的实验成果。
+  内已有的成果，进一步探索了非监督学习的视觉VO技术，复现了一种基于单目且有绝对尺度
+  的非监督VO网络，具体的分析了该网络的各项技术设计，并且给出了阶段性的实验成果。
 
 \end{cabstract}
 
