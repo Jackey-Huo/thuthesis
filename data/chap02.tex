@@ -1,7 +1,67 @@
 % !TeX root = ../main.tex
 
-\chapter{图表公式例子}
+\chapter{THUR-20数据标准及校准技术规范}
 \label{cha:chapter02}
+
+\section{THUR-20设计目标}
+
+\section{THUR-20数据标准}
+\label{sec:standard}
+
+  THUR-20是一个基于UR5机械臂的的标准化抓取数据集，在采集过程中，它的主要设备
+  及传感器组成有：
+
+  \begin{itemize}
+    \item 机械部分，UR5机械臂，Robotiq-2f-85夹爪；
+    \item 传感器部分，包括视觉传感器以及触觉传感器；
+    \item 逻辑控制部分，由一台配有i9 cpu、GeForce2080的笔记本组成；
+  \end{itemize}
+
+  符合规范的THUR-20数据应包含经过时间校准的机械臂关节角度序列，夹爪张角序列，
+  俯视、斜视以及固定在夹爪手腕上的摄像头图片帧序列，这三个视角的图片序列应当
+  全部为RGB-D图像，下面分段详述每个数据形式的具体要求和组织方式。
+
+  数据组织方式：为了使THUR-20数据集标准具有泛化性且新手友好，我们使用一个顶端
+  yaml文件维护每种数据流的种类、名字、及是否存在。若某个数据流（例如顶视RGB-D
+  数据）在当前数据序列中是存在的，则数据录入者应当在顶层的yaml文件中注册本数据
+  流，声明它的名字及数据种类。顶层yaml文件还有一个重要用途，是表明当前任务序列
+  对应的任务种类及任务细分类别，e.g. short-task，pick-up。一个典型顶层yaml文件
+  应当如下所示：
+
+  BLABLABLA，TODO：贴一个带高亮的yaml文件上来，我还没有写。
+
+  UR5机械臂的关节序列：机械臂的关节角度序列是本数据集的基础所在。本数据集中，
+  UR5机械臂的数据帧包含5个部分，分别为：header, name, position, velocity, effort。
+  header中存储了当前帧数据对应的时间戳，name为机械臂对应的关节的名字，为字符串
+  向量，其后的三个向量中的数据顺序都应当对应name中的关节顺序。position为机械臂
+  每个关节的转角，单位为rad；velocity为机械臂每个关节的角速度，单位为rad/s；
+  effort为每个关节上检测到的扭矩，单位为Nm。在position，velocity，effort这
+  三个数据位中，position是必须量，即若当前帧中不含position向量或者向量长度与
+  name中的关节数目不符，则当前帧被判定为非法帧。三个机械臂变量都应当由UR5机械
+  臂的驱动获得，数据采集者可以使用本文提供的开源代码直接运行以获取合法的采集数据。
+  值得注意的是，velocity的获得依赖采集者使用的UR5机械臂固件的版本，因此本数据
+  集允许velocity域为可选项，若采集者无法获得对应数据，将对应向量置为空向量即可。
+  effort的获得则以来于机械臂型号的选择，目前只有UR5e系列有力反馈功能，因此，
+  这一特性也被留为可选域。最终记录的机械臂关节序列应当存储在一个json文件中，典型
+  的数据如下
+
+  BLABLABLA，TODO：贴一个带高亮的json文件上来，数据格式参考ros sensor_msgs/JointState
+
+  Robotiq夹爪张角序列：Robotiq夹爪张角本身数据格式较为简单，但是由于涉及到夹爪的
+  安装以及夹爪上连接的摄像头的建模与避障问题，我们要求数据采集者提供夹爪完全的STL
+  模型，此模型应当包含夹爪上固连的任何物品（相机以及相机基座），并且我们要求采集
+  者给出模型中心到UR5机械臂末端的外参。夹爪张角数据本身应当由三个部分组成：header,
+  position, max_effort。其中header中记录了当前帧数据对应的时间戳，position则为
+  张角大小，单位为m，max_effort为夹爪电机在当前位置给出的输出力，单位为N。夹爪的stl
+  模型应当放在张角序列对应的文件夹内，stl文件名及夹爪到机械臂的外参应当存储在一个
+  yaml文件中，典型yaml文件如下所示：
+
+  BLABLABAL，TODO：贴一个夹爪外参的yaml
+
+  夹爪张角本身的数据序列应当存储在一个json文件中，典型的文件数据格式如下：
+
+  BLABLABLA，TODO：贴一个json，control_msgs/GripperCommand
+
 
 \section{其它例子}
 \label{sec:other}
