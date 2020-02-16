@@ -4,6 +4,8 @@
 \label{cha:chapter02}
 
 \section{THUR-20设计目标}
+\label{sec:design}
+TODO
 
 \section{THUR-20数据标准}
 \label{sec:standard}
@@ -45,14 +47,14 @@
   这一特性也被留为可选域。最终记录的机械臂关节序列应当存储在一个json文件中，典型
   的数据如下
 
-  BLABLABLA，TODO：贴一个带高亮的json文件上来，数据格式参考ros sensor_msgs/JointState
+  BLABLABLA，TODO：贴一个带高亮的json文件上来，数据格式参考ros sensor\_msgs/JointState
 
   Robotiq夹爪张角序列：Robotiq夹爪张角本身数据格式较为简单，但是由于涉及到夹爪的
   安装以及夹爪上连接的摄像头的建模与避障问题，我们要求数据采集者提供夹爪完全的STL
   模型，此模型应当包含夹爪上固连的任何物品（相机以及相机基座），并且我们要求采集
   者给出模型中心到UR5机械臂末端的外参。夹爪张角数据本身应当由三个部分组成：header,
-  position, max_effort。其中header中记录了当前帧数据对应的时间戳，position则为
-  张角大小，单位为m，max_effort为夹爪电机在当前位置给出的输出力，单位为N。夹爪的stl
+  position, max\_effort。 其中header中记录了当前帧数据对应的时间戳，position则为
+  张角大小，单位为m，max\_effort 为夹爪电机在当前位置给出的输出力，单位为N。夹爪的stl
   模型应当放在张角序列对应的文件夹内，stl文件名及夹爪到机械臂的外参应当存储在一个
   yaml文件中，典型yaml文件如下所示：
 
@@ -60,7 +62,133 @@
 
   夹爪张角本身的数据序列应当存储在一个json文件中，典型的文件数据格式如下：
 
-  BLABLABLA，TODO：贴一个json，control_msgs/GripperCommand
+  BLABLABLA，TODO：贴一个json，control\_msgs/GripperCommand
+
+  视觉序列：THUR-20给出了摄像头建议安装的位置，分别是顶视、侧面斜视及在夹爪手腕上放置，
+  但THUR-20只是给出摄像头安装的大致位置，精确的相机-机械臂的外参应通过下一节中的标准化
+  校准标定流程给出。视觉序列应当按时间戳分帧单独存储，在对应文件夹中应当放置一个yaml文件
+  存储摄像头的种类、以及内参和外参。rgb和depth图像应当分开存储在不同的文件夹内，分别以
+  各自的时间戳命名。应有一个csv文件专门存储每一帧的时间戳信息。存储内外參的典型yaml文件
+  如下所示
+
+  BLABLABLA，TODO：贴一个摄像头内外参的文件
+
+  标有时间戳信息的典型csv文件如下：
+
+  BLABLABLA，TODO：贴一个csv
+
+  触觉传感器序列：TODO，调通了再说吧
+
+
+\section{传感器校准规范}
+\label{sec:calibration}
+
+对于多传感器机器人而言，个传感器之间的时间、位置校准，以及传感器本身的校准对于系统的
+可用性和方法的有效性有至关重要的影响。THUR-20给出了一套标准的传感器内外參校准流程，
+并提供了相应的辅助程序，大大降低了数据采集者的学习门槛，有助于促进机器人学习社区的
+发展。
+
+\subsection{摄像头内参标定}
+\label{subsec:cam_intrinsic}
+
+为了将相机图像与真实世界联系起来，我们需要掌握基本的相机投影模型的知识。同时，由于工艺
+及装配误差的影响，摄像头采集到的图像会产生一定程度的畸变，下面本文将会分别介绍相机基本
+光学模型以及1种通用的畸变拟合模型。
+
+\subsubsection{无畸变针孔相机模型}
+\label{subsec:pinhole_cam}
+
+理想相机被认为是一个完美的小孔成像装置，如图TODO所示所有光线均穿过相机透镜的光心，投影到
+像平面上。
+
+TODO: 此处应有一张图
+
+考虑到相机将图片从CMOS中读取出来制成完整图片时，xy方向会有不同程度的拉伸，因此，我们分别
+使用两个参数$f_x, f_y$ 表示x方向和y方向上的光心，正常情况下，$f_x f_y$ 即使相互不同也不应当
+相差太大。另外，在从相机坐标向图片坐标转换时，需要将像平面上的点统一平移一个便宜量，
+这样使得所有像点在图片中的坐标均大于0。因此，假设我们有一3维世界坐标点[X, Y, Z]，在
+图片中对应的图像坐标为[u, v]，则二者之间的转换可表示为：
+
+\begin{equation}
+  \begin{cases}
+    u = f_x * \frac{X}{Z} + c_x \\
+    v = f_y * \frac{Y}{Z} + c_y
+  \end{cases}
+\end{equation}
+
+
+经过整理可得到较为方便书写的版本：
+
+$$
+\begin{bmatrix}
+u \\
+v \\
+1
+\end{bmatrix}
+= \frac{1}{Z}
+\begin{bmatrix}
+  f_x & 0   & c_x \\
+    0 & f_y & c_y \\
+    0 & 0   &   1
+\end{bmatrix}
+\begin{bmatrix}
+X \\
+Y \\
+Z
+\end{bmatrix}
+$$
+
+\subsubsection{一种通用的相机校准模型——Kannala Brant模型}
+
+如\ref{subsec:pinhole_cam}所示，理想状态下，图片中记录下来的物体形状
+应当与真实世界中的物体满足相似关系，但是由于相机透镜的工艺、相机装配
+时的误差，真实相机获取的图片中会发生畸变。Kannala Brant模型
+\cite{kannala2006generic} 提供了一种较为普遍且有效的畸变拟合手段，在
+工程实践中被广泛的应用在窄视角以及鱼眼相机的正畸过程中。
+
+按照畸变产生的效果来分，主要存在两种畸变，分别是径向畸变及切向畸变。
+
+径向畸变产生的主要原因为相机透镜的折射率无法做到完全一致，径向畸变是
+以图像中心为中心，按点到中心的绝对距离r为半径对称分布的，一般来说，径向
+畸变有桶型和枕型两种，两种畸变如图\ref{fig:radial_distort}所示。尽管
+两种径向畸变在表现上 不太一样，但是在使用Kannala Brant模型时，可以
+使用同一种近似手段来拟合两种畸变。
+
+\begin{figure}[h] % use float package if you want it here
+  \centering
+  \includegraphics[width=240pt]{camera_distortion.jpg}
+  \caption{左桶型畸变 右枕型畸变}
+  \label{fig:radial_distort}
+\end{figure}
+
+切向畸变则是由于相机装配过程中，相机透镜平面与CMOS感光平面不完全平行造成
+的，具体造成原因如图\ref{fig:tangential_distort}所示。尽管在各种相机校准
+方法中，关于切向畸变 都有对应的处理手段，但是在实际工程应用中，由于切向
+畸变一般较小，影响也 较小，因此大多数情况下都不予处理。THUR-20发布的标准
+校准流程中，对切向 畸变也不予处理。
+
+\begin{figure}[h] % use float package if you want it here
+  \centering
+  \includegraphics[width=300pt]{tangential_dist.png}
+  \caption{左正常装配结果 右有装配误差的装配结果}
+  \label{fig:tangential_distort}
+\end{figure}
+
+Kannala Brant模型使用光线的入射角$\theta$对图片上对应点的径向距离r进行拟合，
+拟合形式如下式所示。
+
+\begin{equation}
+  r(\theta) = k_1\theta + k_2\theta^{3} + k_3\theta^{5} + k_4\theta^{7} + ...
+\end{equation}
+
+根据工程实践经验，THUR-20规范中，要求使用KB模型校准时，将$k_1$取为1，并对
+拟合参数{k}取到5阶，即有效畸变参数为$[k_2, k_3, k_4, k_5]$。如图TODO为在
+THUR-20数据采集过程中，使用KB模型校准后的顶视摄像头的RGB图片的修正前后
+对比图。
+
+为方便数据采集者开始工作，降低各位同行加入THUR-20数据采集工作的门槛，
+笔者依赖OpenCV编写了相机内参标定程序，可兼容Kinect2、Kinect dk，realsense
+并直接生成THUR-20需要的内参文件。辅助程序地址为：TODO
 
 
 \section{其它例子}
