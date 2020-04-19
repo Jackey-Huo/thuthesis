@@ -1,6 +1,6 @@
 % !TeX root = ../main.tex
 
-\chapter{项目简介}
+\chapter{移动操作机器人的国内外现状}
 \label{cha:intro}
 
 \section{Tinker机器人的设计目标}
@@ -9,7 +9,7 @@
 同学提升技术水平，增进校内交流，提供必要的设施支持，搭建一个校内的，开放有趣的机器人
 交流平台。随着团队的不断发展壮大，未来机器人团队逐渐积累了相当一批技术人才，并且开始有
 机会参于国际比赛。其中Tinker机器人作为团队的主要开发项目，每年固定参加著名的RoboCup
-比赛@HOME分赛场。
+比赛@HOME分赛场\cite{wisspeintner2009robocup}。
 
 作为清华校内机器人方向最具影响力的学生社团，未来机器人团队在促进校内机器人相关领域的
 社区发展，提高同学们的技术水平方面起到了重要影响。其中Tinker作为未来机器人团队的重要
@@ -72,7 +72,7 @@ Robocup@Home比赛每年举行一次，举行地点在国际几大城市巡回�
 在stage I直接淘汰。
 
 stage II的任务内容同stage I基本相当，但是难度会更高，逻辑也更复杂，特别的，在近几年的比赛中，
-增加了General Purpose Service Robot（GPSR），即裁判对机器人下达任意在Robocup@Home
+增加了General Purpose Service Robot（GPSR）任务，即裁判对机器人下达任意在Robocup@Home
 赛场上曾经出现过的任务，考察机器人的完成情况，这一任务旨在帮助参赛者更好的构建机器人控制
 软件，为家用机器人在真实场景下的应用做铺垫。
 
@@ -104,10 +104,11 @@ Final stage为两个得分最高的团队关于冠军奖项的争夺，每年的
 \label{fig:other_teams}
 \end{figure}
 
-\section{RoboCup@Home典型任务介绍}
+\section{RoboCup@Home比赛规则介绍}
 
 经过多年的发展RoboCup@Home已经培育起一个完善的社区，每年RoboCup@Home的比赛任务
-即由社区相关人员协助商议决定，RoboCup@Home组委会共同维护一份RuleBook，组委会成员
+即由社区相关人员协助商议决定，RoboCup@Home组委会共同维护一份RuleBook\cite{rulebook}
+，组委会成员
 使用GitHub完成RuleBook的编写任务，该仓库是完全开放且欢迎参赛者提交修改与贡献的。
 RoboCup@Home组委会中，设有专门的任务制定部门Technical Committee（TC），这部分成员
 大都有深厚的相关从业背景和多年的研究经验，另外有一部分成员来自各个主力参赛队伍的
@@ -120,18 +121,9 @@ RoboCup@Home组委会中，设有专门的任务制定部门Technical Committee�
 尝试了很多新的复杂的任务，其中有一些被证明并不成功，因此2020年的规则制作过程中又将
 不合理的任务去除，将任务数量固定为Stage I 5个，Stage II 4个。
 
-\subsection{导航避障相关任务}
-
-TODO
+\subsection{RoboCup@Home经典任务分析}
 
 
-\subsection{抓取相关任务}
-
-TODO
-
-\subsection{识别与交互相关任务}
-
-TODO
 
 
 \section{Tinker的历史版本}
@@ -140,7 +132,62 @@ TODO
 其硬件设计、软件架构、传感器使用、方案选择都发生了本质的变化。在Tinker不断迭代的
 过程中，机器人队也积累了大量的相关经验和教训，培养出了一代代机器人相关的人才。
 
-TODO：插Tinker之前的各种美照
+早期机器人团队技术实力差资金紧张，因此我们自制了整个机器人参加比赛。当时的机器人如图
+\ref{fig:old_tinker}所示。当时的虽然工艺粗糙，精度很低，但是辅以合适的
+软件算法和恰当的策略，仍然在RoboCup的赛场上取得了不错的成绩。当时的队员们如今有的
+已经走上工作岗位，有的还留在学校继续攻读更高的学位，都在各自的领域中继续发挥自己的
+能量。
+
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.6\linewidth]{old_tinker1.jpg}
+  \caption{早期Tinker侧视图}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.6\linewidth]{old_tinker2.jpg}
+  \caption{早期Tinker主视图}
+\end{subfigure}
+\begin{subfigure}{.8\textwidth}
+  \centering
+  \includegraphics[width=.7\linewidth]{old_tinker3.jpg}
+  \caption{早期Tinker在赛场上}
+\end{subfigure}
+\caption{RoboCup@Home指定机器人，左HSR 右Pepper}
+\label{fig:old_tinker}
+\end{figure}
+
+经过几年的积累，机器人团队于2019年对Tinker进行了彻底的改装，包括
+使用市售成品机械臂及夹爪、使用更高性能的笔记本个更高性能的电机等等
+改造，外观如图\ref{fig:tinker1}。硬件的大幅改进对机器人开发带来
+了极大的冲击，新版Tinker最初
+的很多设计并不合适，因此经过2019年RoboCup@Home比赛后，我们又对Tinker
+进行了一次大规模的改装。第二次改装吸取了前面的教训，大幅裁剪了很多
+冗余设计，改良了供电和控制电路方案。在软件上也有诸多变化，一方面
+固化了许多经过前人验证的优良开发范式，一方面积极缩减代码依赖，在
+轻量化和稳定性方面不断提高，以争取更好的赛场表现。改装后的Tinker外观
+如图\ref{fig:tinker2}所示。
+
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.6\linewidth]{tinker1.png}
+  \caption{改装Tinker 1.0}
+  \label{fig:tinker1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.6\linewidth]{tinker2.jpg}
+  \caption{改装Tinker 2.0}
+  \label{fig:tinker2}
+\end{subfigure}
+\caption{新版Tinker二次改装前后的外观，左改装前，右改装后}
+\label{fig:tinker_new}
+\end{figure}
 
 
 

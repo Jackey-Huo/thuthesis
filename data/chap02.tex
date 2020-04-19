@@ -9,7 +9,7 @@
 按结构划分，可以将Tinker的机械结构粗略的划分为头部，机械臂，骨架，身体主控
 以及底盘。机器人的整体外观如图\ref{fig:tinker_front_side}所示。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=1.\linewidth]{tinker_front_side.png}
   \caption{Tinker前视图与侧视图}
@@ -26,7 +26,7 @@
 使用的型材尺寸做了规范化处理，并且对骨架进行了手动建模，以方便机器人的拆
 装与改进，如图\ref{fig:base_link}所示。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.4\linewidth]{base_link.png}
   \caption{Tinker骨架的STL建模结果}
@@ -49,7 +49,7 @@
 转台的位置精度一直无法达到要求，大大减弱了摄像头的数据效果。因此在新版的Tinker
 中，转台这一设计被机器人团队彻底抛弃了。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.4\linewidth]{neck.png}
   \caption{早期Tinker头部的2自由度转台}
@@ -97,7 +97,7 @@ Tinker使用的机械臂为Universal Robotics公司生产的6自由度机械臂U
 该夹爪张角为140mm，能够更好的满足抓取物品、拾取袋子的需求。因此Tinker团队最终使用
 UR5 + Robotiq 2f-140作为最终比赛方案，如图\ref{fig:ur5_2f140}所示。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.4\linewidth]{ur5_2f140.jpeg}
   \caption{Tinker最终使用的机械臂及夹爪方案}
@@ -124,7 +124,7 @@ Tinker的核心控制由一台搭载了i9-9900K cpu及RTX2080显卡的笔记本�
 装配、调试带来了很大的困难，也对导航的表现造成了影响。之后我们在充分考虑了散热、消防
 等等制约之后，使用亚克利版重新制作了一版配电箱，且对机器人的供电线路进行了梳理，大大
 缩小了机器人的底盘尺寸，也使得整个供电设计更加简洁易于调试。前后两个版本的供电外观
-如图所示。
+如图\ref{fig:elec}所示。
 
 \begin{figure}
 \centering
@@ -132,24 +132,24 @@ Tinker的核心控制由一台搭载了i9-9900K cpu及RTX2080显卡的笔记本�
   \centering
   \includegraphics[width=.6\linewidth]{tinker_elec.jpg}
   \caption{改版前的电池及供电线路放置}
-  \label{fig:kinova}
+  \label{fig:old_elec}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
   \includegraphics[width=.7\linewidth]{tinker_elec_new.png}
   \caption{改版后的电池及供电线路放置}
-  \label{fig:sawyer}
+  \label{fig:new_elec}
 \end{subfigure}
 \caption{Tinker前后两个版本的供电布局}
-\label{fig:arms}
+\label{fig:elec}
 \end{figure}
 
 \subsection{Tinker底盘设计}
 
 Tinker的底盘设计受前几版机器人的影响最多，早期的Tinker使用自制的3自由
 度机械臂，其精度有限且自由度受限太严重，需要具有左右额外自由度的底盘
-来弥补这一不足，因此Tinker的底盘被设计为使用4个麦克纳母轮的万向底盘，底盘
-设计如图所示。
+来弥补这一不足，因此Tinker的底盘被设计为使用4个麦克纳母轮的万向底盘
+\cite{tlale2008kinematics}，底盘设计如图所示。
 
 TODO：插入麦轮的底盘的solidworks图。
 
@@ -159,7 +159,7 @@ TODO：插入麦轮的底盘的solidworks图。
 的改良，选用了扭矩较大且噪音较小的大疆 GM6020直流无刷电机做底盘的动力电机，
 如图 \ref{cha:chapter02}所示。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.7\linewidth]{chassis.png}
   \caption{Tinker底盘的电机传动结构}
@@ -167,17 +167,94 @@ TODO：插入麦轮的底盘的solidworks图。
 \end{figure}
 
 
+\section{Tinker电路设计及通信设计}
 
+Tinker机器人作为一个有复杂功能和结构的完整机器人系统，经过长时间的开发
+和改进，其控制电路及各个部件之间的通信是及其复杂的。在漫长的演进过程中，
+机器人队的队员们创造性的将软件设计中分定义接口、分层描述的概念引入到机器人
+的硬件设计中，对机器人的供电、通信均给出了清晰详尽的分层描述。这一描述大大
+的方便了机器人队成员之间的分工协作，提高了开发的效率。
 
+\subsection{供电系统设计及演化}
 
+新版Tinker在搭建之初由于时间紧迫，使用一台逆变器将电池输出的29V直流电源
+经过一台逆变器直接转到220V交流电（图\ref{fig:dc_ac}所示），再连接各个
+执行控制部件与传感器。在一段
+时间内，这个方案虽然丑陋，但很好的满足了机器人的任务需求，为机器人队的发展
+作出了贡献。但是这个方案的缺陷也非常明显，逆变器本身效率很低，且体积不小，
+再加上市电转到各个传感器的开销，整个机器人变得异常臃肿，且续航极短。逆变器
+工作时还会发出高频啸叫，对机器人的安全和性能都有严重损害。
 
+经过一段时间的调研，机器人队对Tinker的供电系统做了2次系统的改造，逐步的将
+供电改为直流直接供电，并且理顺了机器人内部的供电逻辑。其供电分层描述如图\ref{fig:charge}
+所示
 
+\begin{figure}[ht] % use float package if you want it here
+  \centering
+  \includegraphics[width=.7\linewidth]{charge.png}
+  \caption{Tinker的分层供电示意图}
+  \label{fig:charge}
+\end{figure}
 
+在供电改造的过程中，最消耗精力的是UR5机械臂的供电改造。UR5机械臂本身所需
+的功率极大且其本身的保护机制过于复杂，在机械臂上电时有一套复杂的自检逻辑，
+会在直流供电端尝试拉取一个十几A的大电流对电源进行冲击检测，并且在电流拉取
+结束后还会反复切断电路进行电源测试。这一逻辑过于复杂，市面上常用的DC-DC
+普遍无法满足需求。机器人队成员经过长时间的反复测试和大量的文献检索，最终
+使用明纬SD-1000L-48V开关电源（图\ref{fig:sd1000l_48}所示）替代普通
+电源对机械臂单独供电才满足机械臂的
+供电改造需求。
 
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.6\linewidth]{dc_ac.png}
+  \caption{明纬TS-700-248B 700W逆变器}
+  \label{fig:dc_ac}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.7\linewidth]{sd1000l_48.png}
+  \caption{明纬SD-1000L-48V开关电源}
+  \label{fig:sd1000l_48}
+\end{subfigure}
+\caption{Tinker电路改造中使用过的供电元件}
+\label{fig:charge_hareware}
+\end{figure}
 
+概括的说，Tinker的供电系统中有4个主要电压，分别是电池直接输出且底盘直接
+使用的22.2V，机械臂
+工作电路需要的48V，笔记本电脑充电需要的19V，各个传感器、路由器以及机械臂
+主控需要的12V电压。除机械臂供电使用了明纬SD1000L-48开关电源外，其他变压
+需求均使用了一般市售的大功率直流DCDC电源。在经过两轮改版后，Tinker的供电
+系统以基本稳定，目前Tinker整机上电待机时长能达到1.5h左右，高负荷运行时（
+机械臂高负荷运行且同时执行高强度计算任务，或者底盘不间断运行）可连续工作
+20分钟左右，基本满足比赛需求。
 
+\subsection{通信系统设计}
 
+由于Tinker使用了大量的成品部件，包括机械臂、夹爪、电机、各种传感器等等，
+其通信设计受限比较大。机器人团队使用开源且在机器人科研领域广泛的ROS框架完成
+高层数据及控制通信，辅以必要的底层通信控制，完成整个系统的数据获取与命令
+执行功能，其分层设计示意图如\ref{fig:communication}所示。
 
+\begin{figure}[ht] % use float package if you want it here
+  \centering
+  \includegraphics[width=.7\linewidth]{communication.png}
+  \caption{Tinker的分层通信示意图}
+  \label{fig:communication}
+\end{figure}
+
+头部Kinect、激光雷达及额外的摄像头（一般安装在机械臂腕部，为一台realsense d435）
+通过usb直接连接到中央控制电脑上，通过ros驱动打开，获取的数据流直接发布到
+ROS的通信系统中，夹爪使用串口同样连接到电脑上，使用ROS驱动进行控制。UR5
+机械臂本身有主控机器，它通过路由器于中央控制电脑连接，两者利用ROS的ethernet
+通讯机制通信。麦轮底盘的四个电机统一使用CAN总线连接到一块STM32F4单片机
+开发板上，开发板通过PWM控制电机转动，电机内部的编码器数据通过CAN回传到
+单片机中，单片机再通过串口与主控电脑通信，为了方便底盘接入Tinker的通信
+系统，我们使用rosserial对单片机的串口进行封装，完成控制底盘、获取底盘数据
+的功能。
 
 
 
