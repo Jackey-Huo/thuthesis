@@ -1,10 +1,10 @@
 % !TeX root = ../main.tex
 
-\chapter{Tinker硬件设计介绍}
+\chapter{移动操作机器人的系统搭建}
 \label{cha:chapter02}
 
 
-\section{Tinker机械结构设计}
+\section{机械结构设计}
 
 按结构划分，可以将Tinker的机械结构粗略的划分为头部，机械臂，骨架，身体主控
 以及底盘。机器人的整体外观如图\ref{fig:tinker_front_side}所示。
@@ -33,7 +33,7 @@
   \label{fig:base_link}
 \end{figure}
 
-\subsection{Tinker头部设计及版本迭代}
+\subsection{头部设计及版本迭代}
 
 新版的Tinker头部主要用来放置顶部摄像头，在背景环境特别复杂的情况下还会在头部
 旁边加装专业的采音麦克风用于语音识别和声源定位。在一般情况下使用头部安装的kinect v2
@@ -104,7 +104,7 @@ UR5 + Robotiq 2f-140作为最终比赛方案，如图\ref{fig:ur5_2f140}所示�
   \label{fig:ur5_2f140}
 \end{figure}
 
-\subsection{Tinker主控与供电}
+\subsection{主控与供电}
 
 Tinker的核心控制由一台搭载了i9-9900K cpu及RTX2080显卡的笔记本电脑完成。在前
 几代Tinker设计中，一般主控由工控机或者经过电源改装的台式机担任，但是随着笔记本
@@ -144,7 +144,7 @@ Tinker的核心控制由一台搭载了i9-9900K cpu及RTX2080显卡的笔记本�
 \label{fig:elec}
 \end{figure}
 
-\subsection{Tinker底盘设计}
+\subsection{底盘设计}
 
 Tinker的底盘设计受前几版机器人的影响最多，早期的Tinker使用自制的3自由
 度机械臂，其精度有限且自由度受限太严重，需要具有左右额外自由度的底盘
@@ -167,7 +167,7 @@ TODO：插入麦轮的底盘的solidworks图。
 \end{figure}
 
 
-\section{Tinker电路设计及通信设计}
+\section{电路设计及通信设计}
 
 Tinker机器人作为一个有复杂功能和结构的完整机器人系统，经过长时间的开发
 和改进，其控制电路及各个部件之间的通信是及其复杂的。在漫长的演进过程中，
