@@ -22,60 +22,73 @@
 \section{移动操作机器人国内外应用现状}
 \label{cha:application}
 
-近几年来，国内外机器人相关的创业公司层出不穷，智能机器人行业也是投资人聚焦的热点。机器人
+近年来，国内外机器人相关的创业公司层出不穷，智能机器人行业也是投资机构聚焦的热点。机器人
 作为主要生产工具在制造业承担作用的历史非常久，机器人在制造业最早的规模化应用被认为诞生
-在汽车制造领域。同其他行业相比，汽车领域产品款式固定，出货量大，成本高，这些特性使得基于硬编码
-控制的大型高精度机械臂得到广泛应用，如图\ref{fig:arm_car}展示了工业机械臂在汽车产线上应用
-的场景。以汽车工业为代表的自动化机器人应用大部分为高精度工业机械臂，工业机器人的发展已经有近
+在汽车制造领域。同其他行业相比，汽车领域产品款式固定，出货量大，规模效应强，这些特性使得基于硬编码
+控制的大型高精度机械臂得到广泛应用，如图\ref{fig:armcar} 展示了工业机械臂在汽车产线上应用
+的场景。以汽车工业为代表的自动化机器人应用大部分为高精度工业机械臂，其发展已经有近
 半个世纪的历史，自1973年ABB和KUKA将工业机器人推向市场后，这一行业迎来了飞速发展。目前，国际
-工业机器人领域有四大标杆企业，分别是瑞典 ABB、德国 KUKA、日本 FANUC 和日本安川电机，四大厂商
+工业机器人领域有四大标杆企业，分别是瑞典 ABB、德国 KUKA、日本FANUC 和日本安川电机。四大厂商
 各有所长，ABB擅长控制系统，KUKA优势在于系统集成应用与本体制造，FANUC长于数控系统，安川电机
 的优势在于伺服电机制造和运动控制器的研发。除四大头部企业外，美国 Adept Technology、瑞士
 Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中国新松机器人自动化股份有限公司也是
-国际工业机器人的重要供应商\cite{xihuanhuangReview}。除汽车工业外，高精度工业机械臂在医疗
-领域也取得了不俗的成绩，c
+国际工业机器人的重要供应商\cite{huangxihuanReview}。除汽车工业外，高精度工业机械臂在医疗
+领域也取得了不俗的成绩，Intuitive Surgical公司研发的“达芬奇”手术机器人在世界范围内广泛应用，
+我国于2006年引入第一套达芬奇手术系统，至今各式手术机器人在中国已累计完成10万例外科手术，如
+图\ref{fig:davinci}。
 
 \begin{figure}
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{kuka_car.jpg}
+  \includegraphics[height=3cm]{kuka_car.jpg}
   \caption{完全由库卡机械臂组成的汽车焊接流水线}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{abb_car.jpeg}
+  \includegraphics[height=3cm]{abb_car.jpeg}
   \caption{ABB机械臂组成的汽车零件装配产线}
 \end{subfigure}
-\label{fig:arm_car}
+\caption{工业机械臂在流水线上工作}
+\label{fig:armcar}
 \end{figure}
 
-这些产品注重控制精度与末端负载，功耗巨大，重量也非常可观，几乎没有移动能力。
-尽管目前的工业机器人行业至今以发展多年，体量巨大，技术积累丰厚，但企业的产品研发主要集中在
-工业机械臂的硬件性能方面。近年来随着电商、物流行业的迅猛发展，基于机械臂的智能分捡领域开始
+\begin{figure}[ht] % use float package if you want it here
+  \centering
+  \includegraphics[width=.4\linewidth]{davinci.jpeg}
+  \caption{达芬奇机器人在工作}
+  \label{fig:davinci}
+\end{figure}
+
+
+上述这些产品注重控制精度与末端负载，功耗巨大，重量也非常可观，几乎没有移动能力。
+尽管工业机器人行业至今已发展多年，体量巨大，技术积累丰厚，但企业的产品研发主要集中在
+工业机械臂的硬件性能方面，如提升精度与负载，提升安全性等等。近年来随着电商、物流行业
+的迅猛发展，基于机械臂的智能分捡领域开始
 蓬勃发展，国内涌现出一批专注物品分捡、分类的创业公司，如深圳蓝胖子机器人\ref{fig:lanpangzi}、
-北京梅卡曼德机器人\ref{fig:mechmind}等一批专注于算法或者算法硬件集成的企业。
+北京梅卡曼德机器人\ref{fig:mechmind}等，这些企业专注于算法或者算法硬件集成，致力于
+机器人的自动化与智能化。
 
 
 \begin{figure}
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{lanpangzi_robot.jpeg}
+  \includegraphics[height=4cm]{lanpangzi_robot.jpeg}
   \caption{蓝胖子机器人研发的机械臂分捡系统}
   \label{fig:lanpangzi}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{mechmind.jpg}
+  \includegraphics[height=4cm]{mechmind.jpg}
   \caption{梅卡曼德研发的机械臂操作系统在工作}
   \label{fig:mechmind}
 \end{subfigure}
-\label{fig:arm_car}
 \end{figure}
 
-除了专注于操作的工业机械臂，专注移动的产品自动导航车（AGV，Automated Guided Vehicles）
-在制造业、运输业也大放异彩。AGV产品出现在上世纪50年代，于70年代左右开始应用于制造业。按
+除了专注于操作的工业机械臂，专注移动导航的自动导航车（AGV，Automated Guided Vehicles）
+在制造业、运输业也大放异彩。AGV产品最早出现在上世纪50年代，于70年代左右开始应用于
+制造业\cite{黄志球2010自动导航车}。按
 功能可将AGV分为自动搬运车、自动拖车、自动叉车等几类，或者按照导航方式可分为电磁引导、激光引导、
 惯性引导等方式。目前AGV在汽车厂（如通用、丰田、大众等）的制造和装配线上都得到了广泛的使用。
 相比于工业机械臂，AGV的机械、电子结构并不复杂，控制算法也相对成熟，制造难度不大。我国的海康威视
@@ -86,42 +99,49 @@ Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中�
 \begin{subfigure}{.4\textwidth}
   \centering
   \includegraphics[width=.6\linewidth]{haikang1.png}
+  \caption{移载AGV}
 \end{subfigure}%
 \begin{subfigure}{.4\textwidth}
   \centering
   \includegraphics[width=.6\linewidth]{haikang2.png}
+  \caption{移载AGV}
 \end{subfigure}%
+\\
 \begin{subfigure}{.4\textwidth}
   \centering
   \includegraphics[width=.6\linewidth]{haikang3.png}
+  \caption{叉车}
 \end{subfigure}%
 \begin{subfigure}{.4\textwidth}
   \centering
   \includegraphics[width=.6\linewidth]{haikang4.png}
+  \caption{潜伏系列}
 \end{subfigure}%
+\caption{海康威视发布的各式AGV产品}
 \label{fig:haikang}
 \end{figure}
 
 移动操作机器人本质上是机械臂产品与AGV的集合，但目前来看其商业应用方向与前两者有极大的区别。
 现阶段移动操作机器人领域还没有出现在商业上十分成功的厂商，但是国内外出现了一大批专注这一
-领域的创业公司，致力于将移动操作机器人应用到医疗、服务制造等场景下。例如Diligent Robotics
-研发的机器人护士Moxi\ref{fig:moxi}专注与医院场景下的配送、运输业务；我国华大智造研发的远程
-超声检测系统\ref{fig:huada}，该系统在新冠疫情期间武汉方舱医院内进行了应用测试\ref{wushengzheng20205g}，
+领域的创业公司，致力于将移动操作机器人应用到医疗、服务、制造等场景下。例如Diligent Robotics
+研发的机器人护士Moxi\ref{fig:moxi}专注于医院场景下的配送、运输业务；我国华大智造研发的远程
+超声检测系统\ref{fig:huada}，该系统在新冠疫情期间的武汉方舱医院内进行了应用测试\cite{wushengzheng20205g}，
 取得了可喜的进展。
 
 \begin{figure}
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{moxi.jpg}
+  \includegraphics[height=3.5cm]{moxi.jpg}
+  \caption{Moxi机器人护士}
   \label{fig:moxi}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{huada.png}
+  \includegraphics[height=3.5cm]{huada.png}
+  \caption{华大智造的远程超声检测机器人}
   \label{fig:huada}
 \end{subfigure}%
-\label{fig:haikang}
 \end{figure}
 
 除上述两例面向特定任务的移动机器人外，产业界还有一部分产品定位为“仿人”的具有社交属性的服务
@@ -133,21 +153,23 @@ Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中�
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{hsr.jpeg}
+  \includegraphics[height=5cm]{hsr.jpeg}
   \caption{Toyota Human Support Robot}
   \label{fig:hsr}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{pepper.jpeg}
+  \includegraphics[height=5cm]{pepper.jpeg}
   \caption{Softbank Robotics Pepper}
   \label{fig:pepper}
 \end{subfigure}
 \label{fig:hsr_pepper}
+\caption{仿人机器人产品}
 \end{figure}
 
 除了上述商业应用比较明确的公司以及产品外，国际上大名顶顶的波士顿动力公司（Boston Dynamics）也
-研究发布了几款轮式移动操作机器人\ref{fig:bd_wheel}或者以大狗为移动平台挂载轻量级机械臂的机器人\ref{fig:bd_dog}。
+研究发布了几款轮式移动操作机器人\ref{fig:bd_wheel}和以大狗为移动平台挂载轻量级机械臂的机器人\ref{fig:bd_dog}。
+这些机器人在运动控制上均达到了极高的水平，为移动操作机器人的运动性能评价设定了新的标杆。
 
 \begin{figure}
 \centering
@@ -163,13 +185,125 @@ Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中�
   \caption{仓储搬运机器人Handle}
   \label{fig:bd_wheel}
 \end{subfigure}
+\caption{波士顿动力发布的移动操作机器人产品}
 \end{figure}
 
 
 \section{移动操作机器人国内外研究现状}
 \label{cha:research}
 
+机器人领域中学术界的研究总是走在工业界前面，移动操作机器人方向也不例外。最早的工业
+机械臂于1969年由Victor Scheinman发明，称为“斯坦福机械臂”，随后Victor Scheinman在
+MIT AI Lab设计了被成为“MIT arm”的机械臂并在一些公司的支持下开发了Puma机器人\cite{huangxihuanReview}，
+机器人最初诞生自高校的实验室里。在50年后的今天，学术界的研究依然指引着机器人发展的
+方向。随着计算机技术的不断发展，深度学习以及各类控制算法的成熟，研究者们开始将目光
+聚焦于提升机器人的“智能性”以及它的泛化性上。
 
+学术领域在探索各式感知、控制、交互方法的同时，也自研或者培育了许多移动操作机器人产品。
+这些产品机器人不但对领域内前沿的设计思想进行实践、对前沿的传感器进行尝试，方便了广大
+研究人员，有些甚至取得了商业上的成功。例如在开源机器人领域著名的PR2机器人\ref{fig:pr2}
+以及TurtleBot\ref{fig:turtlebot}机器人平台。
+
+\begin{figure}
+\centering
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{pr2.jpeg}
+  \caption{PR2服务机器人}
+  \label{fig:pr2}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{turtlebot3.jpg}
+  \caption{turtlebot3机器人}
+  \label{fig:turtlebot}
+\end{subfigure}
+\caption{学术机器人平台}
+\end{figure}
+
+为了统一机器人算法研究的编程平台，降低方法的复现难度，促进社区的健康发展。广大机器人
+研究学者们也参与推动维护了多个开源的机器人编程框架，其中包括应用广泛的ROS
+（Robot Operating System）\cite{quigley2009ros}，YARP
+（Yet another robot platform）\cite{metta2006yarp}等框架。这些开源框架为社区提供了
+极大的发展便利，同时某些面向学术研究的移动机器人操作平台也通过捆绑支持这些机器人
+编程框架取得了商业上的成功，例如前文提到的PR2和TurtleBot机器人；Universal Robotics
+研发的URx系列机械臂\ref{fig:urx}； 以及国内的autolabor四轮
+差速车\ref{fig:autolaborpro1}\ref{fig:autolabor}等等产品。
+
+
+\begin{figure}
+\centering
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{ur_series.jpg}
+  \caption{Universal Robotics研发的系列UR机械臂}
+  \label{fig:urx}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{autolaborpro1.jpg}
+  \caption{Autolabor 大负载四轮差速车}
+  \label{fig:autolaborpro1}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.6\linewidth]{autolabor.jpg}
+  \caption{Autolabor小型四轮差速平台}
+  \label{fig:autolabor}
+\end{subfigure}
+\caption{支持ROS平台的机器人产品}
+\end{figure}
+
+
+机器人算法一直是科研领域的研究热点，按照功能可以将机器人相关的算法分为感知和控制两部分。
+感知方向包括物品的检测、分类、定位等功能，得益于深度神经网络的快速发展，机器人的感知能力
+近年来有了飞速的提高，借助经典的视觉检测方法配合机械臂规划方法实现的快速自动分捡方案
+在各大比赛中不断出现。借助深度学习或者传统视觉方法、点云处理方法实现的拾取平面检测，抓取
+点寻找，夹爪位姿寻找算法也不断涌现，并且取得了非常好的效果。在导航定位方面，SLAM技术（
+simultaneous localization and mapping，即时定位与地图构建）日趋成熟，基于视觉、点云或者
+多传感器融合的算法不断出现，如ORB-SLAM\cite{mur2015orb}，Cartographer\cite{hess2016real}，
+VINS\cite{qin2018vins}等等，不断提高机器人主动定位的精度与鲁帮性。导航算法的进步主要体现
+在控制框架的创新和完善上，经过数十年的努力，机器人社区在导航方面已经形成了较为稳定的一套
+方法，即基于Costmap的分层地图维护方法\cite{lu2014layered}和分别负责路径生成与控制命令
+生成的双规划器算法\cite{guimaraes2016ros}。目前
+在静态环境中的灵活避障导航问题已经基本被解决\cite{Zhou2017A}。 此外增强学习在机器人控制
+上的应用也成为近年来算法方向的研究热点\cite{schaal2002learning}。
+
+为促进研究成果在实际场景中的应用，各大公司会议等组织举办了许多世界级的面向特定场景的
+机器人大赛，其中著名的有Amazon Picking Challenge\cite{wurman2016amazon}，
+RoboCup@Home\cite{wisspeintner2009robocup}，IROS Manipulation Competition\cite{moon2017iros}。
+这些比赛极大的促进了机器人社区的交流，在比赛期间也涌现出了许多优秀的机器人设计以及
+方法，例如在RoboCup@Home赛场上就出现了大量设计新奇，功能多样的机器人\ref{fig:other_teams}。
+
+\begin{figure}
+    \centering
+    \begin{minipage}{.45\linewidth}
+            \begin{subfigure}[t]{.9\linewidth}
+                \includegraphics[width=\textwidth]{homer.png}
+                \caption{homer@ UniKoblenz}
+            \end{subfigure}
+    \end{minipage}
+    \begin{minipage}{.45\linewidth}
+        \begin{subfigure}[t]{.8\linewidth}
+            \includegraphics[width=\textwidth]{pumas.jpg}
+            \caption{Pumas}
+        \end{subfigure} \\
+        \begin{subfigure}[b]{.8\linewidth}
+            \includegraphics[width=\textwidth]{catie.jpg}
+            \caption{CATIE Robotics}
+        \end{subfigure} 
+    \end{minipage}
+    \caption{RoboCup@Home中出现的机器人}
+    \label{fig:other_teams}
+\end{figure}
+
+\section{本文内容简介}
+
+本章系统的介绍了移动操作机器人的基本定义和国内外研究、应用现状。后续章节将对本文的
+主要工作——Tinker移动操作机器人进行介绍，详细的给出Tinker机器人的系统搭建，定位
+导航算法的实现与调试，机械臂控制及相应的视觉算法实现。
+
+\iffalse
 \section{Tinker机器人的设计目标}
 
 清华大学未来机器人团队成立于2012年，旨在帮助对机器人领域各个方面感兴趣的
@@ -211,8 +345,7 @@ OPL为开放平台比赛，参赛者必须自行设计搭造参赛机器人，�
 和组织中的硬件设计能力，并探索结构、硬件方面的更多可能性。Robocup@Home自2009年开始举办，
 多年的比赛中OPL赛场中涌现了大量的优秀机器人设计作品，Tinker即为其中优秀的一员。除Tinker
 外，还有homer@ UniKoblenz\cite{memmesheimer2017homer}，Pumas\cite{savage2013pumas}，
-CATIE Robotics\cite{fabre2018catie}等一批外观独特，功能强大的参赛作品出现，如图
-\ref{fig:other_teams}。
+CATIE Robotics\cite{fabre2018catie}等一批外观独特，功能强大的参赛作品出现，如图\ref{fig:other_teams}。
 
 Robocup@Home比赛每年举行一次，举行地点在国际几大城市巡回举办，由高校或者相关组织承办。
 通常比赛分为3个stage，每个stage设有若干任务，参赛队伍一次完成任务，根据完成程度和完成时
@@ -230,29 +363,6 @@ Final stage为两个得分最高的团队关于冠军奖项的争夺，每年的
 将送餐机器人作为Final Stage的考察目标，要求参赛队伍在一个嘈杂的餐厅环境中将食物托盘
 送到某一个特定食客手上，并完成必要的交互。
 
-\begin{figure}
-\centering
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.7\linewidth]{homer.png}
-  \caption{homer@ UniKoblenz}
-  \label{fig:homer}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.7\linewidth]{pumas.jpg}
-  \caption{Pumas}
-  \label{fig:pumas}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.7\linewidth]{catie.jpg}
-  \caption{CATIE Robotics}
-  \label{fig:catie}
-\end{subfigure}
-\caption{RoboCup@Home指定机器人，左HSR 右Pepper}
-\label{fig:other_teams}
-\end{figure}
 
 \section{RoboCup@Home比赛规则介绍}
 
@@ -342,7 +452,7 @@ RoboCup@Home组委会中，设有专门的任务制定部门Technical Committee�
 
 
 
-
+\fi
 
 
 
