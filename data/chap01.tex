@@ -27,7 +27,26 @@
 在汽车制造领域。同其他行业相比，汽车领域产品款式固定，出货量大，规模效应强，这些特性使得基于硬编码
 控制的大型高精度机械臂得到广泛应用，如图\ref{fig:armcar} 展示了工业机械臂在汽车产线上应用
 的场景。以汽车工业为代表的自动化机器人应用大部分为高精度工业机械臂，其发展已经有近
-半个世纪的历史，自1973年ABB和KUKA将工业机器人推向市场后，这一行业迎来了飞速发展。目前，国际
+半个世纪的历史，自1973年ABB和KUKA将工业机器人推向市场后，这一行业迎来了飞速发展，工业机械臂
+的厂商不断增加，款式与性能持续丰富，各种面对细分领域的工业机械臂相继面世，如图\ref{fig:arms}。
+
+\begin{figure}
+\centering
+\begin{subfigure}{1.\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{arm1.jpg}
+  \includegraphics[height=3.5cm]{arm2.png}
+  \includegraphics[height=3.5cm]{arm4.jpg}\\
+  \includegraphics[height=3.5cm]{arm3.jpg}
+  \includegraphics[height=3.5cm]{arm5.jpg}
+  \includegraphics[height=3.5cm]{arm6.jpeg}
+\end{subfigure}%
+\caption{各式工业机械臂产品}
+\label{fig:arms}
+\end{figure}
+
+
+目前，国际
 工业机器人领域有四大标杆企业，分别是瑞典 ABB、德国 KUKA、日本FANUC 和日本安川电机。四大厂商
 各有所长，ABB擅长控制系统，KUKA优势在于系统集成应用与本体制造，FANUC长于数控系统，安川电机
 的优势在于伺服电机制造和运动控制器的研发。除四大头部企业外，美国 Adept Technology、瑞士
@@ -35,7 +54,12 @@ Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中�
 国际工业机器人的重要供应商\cite{huangxihuanReview}。除汽车工业外，高精度工业机械臂在医疗
 领域也取得了不俗的成绩，Intuitive Surgical公司研发的“达芬奇”手术机器人在世界范围内广泛应用，
 我国于2006年引入第一套达芬奇手术系统，至今各式手术机器人在中国已累计完成10万例外科手术，如
-图\ref{fig:davinci}。
+图\ref{fig:davinci}。近年来，一些富有展示性的机械臂应用开始逐步面世，例如机器人调酒应用。
+最早引起轰动的是皇家加勒比游轮有限公司在其的最新款邮轮海洋量子号上的“仿生酒吧”中应用了机器人
+调酒师，如图\ref{fig:liangzi_arm}，很快各种调酒机器人被竞相开发出来，如意大利的机器人
+酒吧\ref{fig:italy_arm}，拉斯维加斯的机器人调酒师\ref{fig:las_arm}，以及我国哈工大开发的
+机器人调酒师\ref{fig:hgd_arm}。尽管机器人调酒目前并不能带来成本或者质量
+上的提升，但是机器人调酒的概念本身富有科技感，新鲜有趣充满噱头，是吸引消费者的一大亮点。
 
 \begin{figure}
 \centering
@@ -60,6 +84,35 @@ Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中�
   \label{fig:davinci}
 \end{figure}
 
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{liangzi_arm.jpg}
+  \caption{皇家加勒比海洋量子号的仿生酒吧}
+  \label{fig:liangzi_arm}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{italy_arm.jpg}
+  \caption{意大利The View机器人酒吧}
+  \label{fig:italy_arm}
+\end{subfigure}%
+\\
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{las_arm.jpg}
+  \caption{拉斯维加斯微醺机器人酒吧}
+  \label{fig:las_arm}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{hgd_arm.jpg}
+  \caption{哈工大开发的机器人调酒师}
+  \label{fig:hgd_arm}
+\end{subfigure}%
+\caption{工业机械臂在流水线上工作}
+\end{figure}
 
 上述这些产品注重控制精度与末端负载，功耗巨大，重量也非常可观，几乎没有移动能力。
 尽管工业机器人行业至今已发展多年，体量巨大，技术积累丰厚，但企业的产品研发主要集中在
@@ -96,30 +149,74 @@ Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中�
 
 \begin{figure}
 \centering
-\begin{subfigure}{.4\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{haikang1.png}
+  \includegraphics[width=.7\linewidth]{haikang1.png}
   \caption{移载AGV}
 \end{subfigure}%
-\begin{subfigure}{.4\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{haikang2.png}
+  \includegraphics[width=.7\linewidth]{haikang2.png}
   \caption{移载AGV}
 \end{subfigure}%
 \\
-\begin{subfigure}{.4\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{haikang3.png}
+  \includegraphics[width=.7\linewidth]{haikang3.png}
   \caption{叉车}
 \end{subfigure}%
-\begin{subfigure}{.4\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{haikang4.png}
+  \includegraphics[width=.7\linewidth]{haikang4.png}
   \caption{潜伏系列}
 \end{subfigure}%
 \caption{海康威视发布的各式AGV产品}
 \label{fig:haikang}
 \end{figure}
+
+AGV产品除了在制造业广泛应用外，近年来也开始在服务业逐步发展，例如今年来十分火爆的海底捞
+机器人餐厅配备了智能AGV送餐员\ref{fig:haidilao}，瑞幸咖啡尝试的无人配送小车\ref{fig:luckin}，
+智行者开发的无人自动清扫车\ref{fig:zhixingzhe}， Yogo Robot开发的写字楼包
+裹配送机器人\ref{fig:yogo}，极木科技开发的智能车辆搬动机器人\ref{fig:jimu}等等。这些产品
+专注细分领域的需求，有一定的智能处理能力。
+
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{haidilao.jpg}
+  \caption{海底捞送餐机器人}
+  \label{fig:haidilao}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{luckin.jpg}
+  \caption{瑞幸咖啡的无人配送车}
+  \label{fig:luckin}
+\end{subfigure}%
+\\
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{zhixingzhe.jpg}
+  \caption{智行者开发的无人自动清扫车}
+  \label{fig:zhixingzhe}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{yogo.jpg}
+  \caption{Yogo Robot开发的写字楼包裹配送机器人}
+  \label{fig:yogo}
+\end{subfigure}%
+\\
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{jimu.jpg}
+  \caption{极木科技开发的智能车辆搬动机器人}
+  \label{fig:jimu}
+\end{subfigure}%
+\end{figure}
+
+
 
 移动操作机器人本质上是机械臂产品与AGV的集合，但目前来看其商业应用方向与前两者有极大的区别。
 现阶段移动操作机器人领域还没有出现在商业上十分成功的厂商，但是国内外出现了一大批专注这一
@@ -208,13 +305,13 @@ MIT AI Lab设计了被成为“MIT arm”的机械臂并在一些公司的支持
 \centering
 \begin{subfigure}{.6\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{pr2.jpeg}
+  \includegraphics[height=4cm]{pr2.jpeg}
   \caption{PR2服务机器人}
   \label{fig:pr2}
 \end{subfigure}%
 \begin{subfigure}{.4\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{turtlebot3.jpg}
+  \includegraphics[height=4cm]{turtlebot3.jpg}
   \caption{turtlebot3机器人}
   \label{fig:turtlebot}
 \end{subfigure}
@@ -258,22 +355,137 @@ MIT AI Lab设计了被成为“MIT arm”的机械臂并在一些公司的支持
 机器人算法一直是科研领域的研究热点，按照功能可以将机器人相关的算法分为感知和控制两部分。
 感知方向包括物品的检测、分类、定位等功能，得益于深度神经网络的快速发展，机器人的感知能力
 近年来有了飞速的提高，借助经典的视觉检测方法配合机械臂规划方法实现的快速自动分捡方案
-在各大比赛中不断出现。借助深度学习或者传统视觉方法、点云处理方法实现的拾取平面检测，抓取
-点寻找，夹爪位姿寻找算法也不断涌现，并且取得了非常好的效果。在导航定位方面，SLAM技术（
-simultaneous localization and mapping，即时定位与地图构建）日趋成熟，基于视觉、点云或者
-多传感器融合的算法不断出现，如ORB-SLAM\cite{mur2015orb}，Cartographer\cite{hess2016real}，
-VINS\cite{qin2018vins}等等，不断提高机器人主动定位的精度与鲁帮性。导航算法的进步主要体现
+在各大比赛中不断出现。借助深度学习（如图\ref{fig:img_seg})或者传统视觉方法、点云
+处理方法（如图\ref{fig:pc_seg}）实现的拾取平面检测，抓取
+点寻找，夹爪位姿寻找算法也不断涌现，并且取得了非常好的效果。
+
+\begin{figure}
+\centering
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{img_seg.jpg}
+  \caption{基于图片的物品分割识别}
+  \label{fig:img_seg}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{pc_seg.jpeg}
+  \caption{基于点云的物品分割效果}
+  \label{fig:pc_seg}
+\end{subfigure}
+\caption{学术机器人平台}
+\end{figure}
+
+
+在导航定位方面，SLAM技术（ simultaneous localization and mapping，即时定位与地图构建）
+日趋成熟，基于视觉、点云或者多传感器融合的算法不断出现，视觉方面，直接法、特征点法
+或者半直接的算法大量增加，特别的基于优化的方案有了长足的发展，被认为在未来的SLAM领域能够取代
+滤波算法，如基于特征点法的ORB-SLAM\cite{mur2015orb}，视觉与IMU融合的VINS\cite{qin2018vins}，
+半直接法的SVO\cite{forster2014svo}，稀疏直接法的DSO\cite{engel2017direct} 等等，
+如图\ref{fig:slams}；基于雷达的各类
+SLAM算法进展也十分迅速，如基于粒子滤波的Gmapping\cite{grisettiyz2005improving}，基于优化
+的loam\cite{zhang2014loam}，基于优化以及子图的Cartographer\cite{hess2016real}等等。激光
+SLAM主要以产出2D地图和位姿为主，其算法结果可视化效果大多很相似，如图\ref{fig:lidar_slams}
+
+\begin{figure}
+\centering
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{orb.jpg}
+  \caption{ORB-SLAM}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{vins.jpeg}
+  \caption{VINS-Mono}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3cm]{svo.jpg}
+  \caption{SVO}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3cm]{dso.jpeg}
+  \caption{DSO}
+\end{subfigure}
+\caption{基于视觉的各种SLAM算法效果图}
+\label{fig:slams}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{cartographer.jpg}
+  \caption{雷达生成2D地图的可视化效果}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{cartographer3d.jpg}
+  \caption{多线激光雷达生成的3D效果图}
+\end{subfigure}
+\caption{基于雷达的SLAM算法效果图}
+\label{fig:lidar_slams}
+\end{figure}
+
+
+格式SLAM算法不断提高机器人主动定位的精度与鲁帮性的同时，导航算法的进步主要体现
 在控制框架的创新和完善上，经过数十年的努力，机器人社区在导航方面已经形成了较为稳定的一套
 方法，即基于Costmap的分层地图维护方法\cite{lu2014layered}和分别负责路径生成与控制命令
 生成的双规划器算法\cite{guimaraes2016ros}。目前
 在静态环境中的灵活避障导航问题已经基本被解决\cite{Zhou2017A}。 此外增强学习在机器人控制
 上的应用也成为近年来算法方向的研究热点\cite{schaal2002learning}。
 
+机械臂控制算法是机器人算法领域的一大方向，由于现代机械臂自由度高，冗余程度大，状态空间大，
+对机械臂的规划算法提出了严峻挑战。学术界不断提出新的机械臂规划算法例如基于梯度优化的机械臂
+路径寻找算法 CHOMP\cite{ratliff2009chomp}，随机路径优化算法 STOMP\cite{kalakrishnan2011stomp}
+等等。同时，一些维护机械臂相关算法 的开源库也迅速兴起，比如维护随机采样规划器的OMPL
+（The Open Motion Planning Library）\cite{sucan2010open}，
+基于搜索算法的SBPL（The Search Based Planning Library）\cite{likhachev2014sbpl}，以及
+用于碰撞检测的FCL（The Fast Collision Library）\cite{pan2012fcl}。随着这些支撑组件的不断
+成熟，一些集运动学解算、路径生成、碰撞检测功能于一体的一站式的机械臂规划框架也开始出现，
+如基于ROS的MoveIt!\cite{chitta2012moveit}， V-REP等等，如图\ref{fig:moveit_vrep}
+
+\begin{figure}
+\centering
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{moveit.png}
+  \caption{MoveIt!工作时的可视化窗口}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{vrep.jpeg}
+  \caption{V-REP可视化窗口}
+\end{subfigure}
+\caption{开源的机械臂规划框架}
+\label{fig:moveit_vrep}
+\end{figure}
+
+
 为促进研究成果在实际场景中的应用，各大公司会议等组织举办了许多世界级的面向特定场景的
 机器人大赛，其中著名的有Amazon Picking Challenge\cite{wurman2016amazon}，
 RoboCup@Home\cite{wisspeintner2009robocup}，IROS Manipulation Competition\cite{moon2017iros}。
 这些比赛极大的促进了机器人社区的交流，在比赛期间也涌现出了许多优秀的机器人设计以及
-方法，例如在RoboCup@Home赛场上就出现了大量设计新奇，功能多样的机器人\ref{fig:other_teams}。
+方法。下面以RoboCup@Home为例详细的介绍机器人赛事如何组织及促进学术的发展交流。
+
+RoboCup@Home比赛已经培育起一个完善的社区，每年RoboCup@Home的比赛任务
+即由社区相关人员协助商议决定，RoboCup@Home组委会共同维护一份RuleBook\cite{rulebook}
+，组委会成员
+使用GitHub完成RuleBook的编写任务，该仓库是完全开放且欢迎参赛者提交修改与贡献的。
+RoboCup@Home组委会中，设有专门的任务制定部门Technical Committee（TC），这部分成员
+大都有深厚的相关从业背景和多年的研究经验，另外有一部分成员来自各个主力参赛队伍的
+核心开发人员（比如笔者作为Tinker机器人的主要程序员参与了2020年的TC工作），以
+确保比赛规则同时兼顾学科研究热点和可完成性。
+
+随着机器人行业相关技术的不断发展，RuleBook中的任务也在每年更新，并且向着越来越复杂、
+越来越贴近真实生活场景的方向演进。在多年的比赛中，组委会在任务内容、任务形式上也作出
+了很多改进与尝试，2019年的RoboCup@Home比赛就及其大胆的将任务数量进行了爆炸式的扩容，
+尝试了很多新的复杂的任务，其中有一些被证明并不成功，因此2020年的规则制作过程中又将
+不合理的任务去除，将任务数量固定为Stage I 5个，Stage II 4个。 在RoboCup@Home赛场上
+出现了大量设计新奇，功能多样的机器人\ref{fig:other_teams}。
 
 \begin{figure}
     \centering
