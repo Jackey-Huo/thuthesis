@@ -8,22 +8,26 @@
 
 移动操作机器人（Mobile Manipulator）目前仍然是一个非常宽泛的概念，通常我们认为，典型的移动操作
 机器人是由一台机械臂和一个可自由移动的平台组成的，机械臂通过某种方式挂载在平台上\cite{bostelman2016survey}。
-近年来，随着科技的飞速发展以及制造业转型的巨大压力，智能机器人方向成为新的研究热点，在学术界及
+近年来，随着科技的飞速发展以及制造业转型的巨大压力，移动操作机器人成为新的研究热点，在学术界及
 工业界受到了广泛关注\cite{schneier2015literature}。移动操作机器人已经被广泛的应用到了航天\cite{ambrose2004mobile}、医药、制造\cite{guizzo2011meka}、清洁、服务等多个场景，
 在各个领域发挥着重要的作用。但移动操作机器人在性能和功能上还远远没有达到我们期待的水平，相
 关研究及工业尝试还需要很长时间的发展。
 
 广义的移动操作机器人除机械臂外，可依赖的平台非常多样，除了常见的轮式底盘、平衡车式底盘外，还可
-使用无人机作为移动平台。无人机平台的移动操作机器人有夹爪式、机械臂式等各种种类，近年来也广泛的
-受到各界的关注\cite{ruggiero2018aerial}。相比于无人机底盘，轮式底盘的移动操作机器人负载更
+使用无人机作为移动平台，甚至仿人的双足行走底盘。无人机平台的移动操作机器人有夹爪式、机械臂式等
+各种种类，近年来也广泛的
+受到各界的关注\cite{ruggiero2018aerial}。相比于无人机或者足式底盘，轮式底盘的移动操作机器人负载更
 高，性能更强劲，应用更加广泛，功能更加多样，品种也更加丰富，因此本文主要论述以轮式底盘作为移动
 平台的移动操作机器人，并给出相应的控制方法。
 
 \section{移动操作机器人国内外应用现状}
 \label{cha:application}
 
-近年来，国内外机器人相关的创业公司层出不穷，智能机器人行业也是投资机构聚焦的热点。机器人
-作为主要生产工具在制造业承担作用的历史非常久，机器人在制造业最早的规模化应用被认为诞生
+近年来，国内外机器人相关的创业公司层出不穷，移动操作机器人行业也是投资机构聚焦的热点。下面本文
+将分别介绍移动操作机器人的两大主要部分：机械臂以及移动底盘的应用历史与现状，随后介绍移动操作机器人
+作为整体的应用情况。
+
+机械臂作为主要生产工具在制造业承担作用的历史非常久，机械臂在制造业最早的规模化应用被认为诞生
 在汽车制造领域。同其他行业相比，汽车领域产品款式固定，出货量大，规模效应强，这些特性使得基于硬编码
 控制的大型高精度机械臂得到广泛应用，如图\ref{fig:armcar} 展示了工业机械臂在汽车产线上应用
 的场景。以汽车工业为代表的自动化机器人应用大部分为高精度工业机械臂，其发展已经有近
@@ -51,15 +55,14 @@
 各有所长，ABB擅长控制系统，KUKA优势在于系统集成应用与本体制造，FANUC长于数控系统，安川电机
 的优势在于伺服电机制造和运动控制器的研发。除四大头部企业外，美国 Adept Technology、瑞士
 Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中国新松机器人自动化股份有限公司也是
-国际工业机器人的重要供应商\cite{huangxihuanReview}。除汽车工业外，高精度工业机械臂在医疗
+国际工业机器人的重要供应商\cite{huangxihuanReview}。
+
+除汽车工业外，高精度工业机械臂在医疗
 领域也取得了不俗的成绩，Intuitive Surgical公司研发的“达芬奇”手术机器人在世界范围内广泛应用，
 我国于2006年引入第一套达芬奇手术系统，至今各式手术机器人在中国已累计完成10万例外科手术，如
-图\ref{fig:davinci}。近年来，一些富有展示性的机械臂应用开始逐步面世，例如机器人调酒应用。
-最早引起轰动的是皇家加勒比游轮有限公司在其的最新款邮轮海洋量子号上的“仿生酒吧”中应用了机器人
-调酒师，如图\ref{fig:liangzi_arm}，很快各种调酒机器人被竞相开发出来，如意大利的机器人
-酒吧\ref{fig:italy_arm}，拉斯维加斯的机器人调酒师\ref{fig:las_arm}，以及我国哈工大开发的
-机器人调酒师\ref{fig:hgd_arm}。尽管机器人调酒目前并不能带来成本或者质量
-上的提升，但是机器人调酒的概念本身富有科技感，新鲜有趣充满噱头，是吸引消费者的一大亮点。
+图~\ref{fig:davinci}。我国华大智造研发的远程
+超声检测系统\ref{fig:huada}，该系统在新冠疫情期间的武汉方舱医院内进行了应用测试\cite{wushengzheng20205g}，取得了可喜的进展。
+
 
 \begin{figure}
 \centering
@@ -77,42 +80,65 @@ Staubli、意大利Comau、日本的川崎、爱普生、那智不二越和中�
 \label{fig:armcar}
 \end{figure}
 
-\begin{figure}[ht] % use float package if you want it here
-  \centering
-  \includegraphics[width=.4\linewidth]{davinci.jpeg}
-  \caption{达芬奇机器人在工作}
-  \label{fig:davinci}
-\end{figure}
-
 \begin{figure}
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{liangzi_arm.jpg}
-  \caption{皇家加勒比海洋量子号的仿生酒吧}
-  \label{fig:liangzi_arm}
+  \includegraphics[height=4cm]{davinci.jpeg}
+  \caption{达芬奇机器人在工作}
+  \label{fig:davinci}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{italy_arm.jpg}
-  \caption{意大利The View机器人酒吧}
-  \label{fig:italy_arm}
+  \includegraphics[height=4cm]{huada.png}
+  \caption{华大智造的远程超声检测机器人}
+  \label{fig:huada}
 \end{subfigure}%
-\\
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[height=3.5cm]{las_arm.jpg}
-  \caption{拉斯维加斯微醺机器人酒吧}
-  \label{fig:las_arm}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[height=3.5cm]{hgd_arm.jpg}
-  \caption{哈工大开发的机器人调酒师}
-  \label{fig:hgd_arm}
-\end{subfigure}%
-\caption{工业机械臂在流水线上工作}
+\caption{机械臂产品在国内外医疗领域的应用}
 \end{figure}
+
+
+
+\iffalse % 删掉这些华而不实的玩意儿
+    近年来，一些富有展示性的机械臂应用开始逐步面世，例如机器人调酒应用。
+    最早引起轰动的是皇家加勒比游轮有限公司在其的最新款邮轮海洋量子号上的“仿生酒吧”中应用了机器人
+    调酒师，如图\ref{fig:liangzi_arm}，很快各种调酒机器人被竞相开发出来，如意大利的机器人
+    酒吧\ref{fig:italy_arm}，拉斯维加斯的机器人调酒师\ref{fig:las_arm}，以及我国哈工大开发的
+    机器人调酒师\ref{fig:hgd_arm}。尽管机器人调酒目前并不能带来成本或者质量
+    上的提升，但是机器人调酒的概念本身富有科技感，新鲜有趣充满噱头，是吸引消费者的一大亮点。
+
+
+    \begin{figure}
+    \centering
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[height=3.5cm]{liangzi_arm.jpg}
+      \caption{皇家加勒比海洋量子号的仿生酒吧}
+      \label{fig:liangzi_arm}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[height=3.5cm]{italy_arm.jpg}
+      \caption{意大利The View机器人酒吧}
+      \label{fig:italy_arm}
+    \end{subfigure}%
+    \\
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[height=3.5cm]{las_arm.jpg}
+      \caption{拉斯维加斯微醺机器人酒吧}
+      \label{fig:las_arm}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[height=3.5cm]{hgd_arm.jpg}
+      \caption{哈工大开发的机器人调酒师}
+      \label{fig:hgd_arm}
+    \end{subfigure}%
+    \caption{机械臂调酒师}
+    \end{figure}
+
+\fi
 
 上述这些产品注重控制精度与末端负载，功耗巨大，重量也非常可观，几乎没有移动能力。
 尽管工业机器人行业至今已发展多年，体量巨大，技术积累丰厚，但企业的产品研发主要集中在
@@ -214,31 +240,32 @@ AGV产品除了在制造业广泛应用外，近年来也开始在服务业逐�
   \caption{极木科技开发的智能车辆搬动机器人}
   \label{fig:jimu}
 \end{subfigure}%
+\caption{AGV机器人在服务业的应用}
 \end{figure}
-
 
 
 移动操作机器人本质上是机械臂产品与AGV的集合，但目前来看其商业应用方向与前两者有极大的区别。
 现阶段移动操作机器人领域还没有出现在商业上十分成功的厂商，但是国内外出现了一大批专注这一
-领域的创业公司，致力于将移动操作机器人应用到医疗、服务、制造等场景下。例如Diligent Robotics
-研发的机器人护士Moxi\ref{fig:moxi}专注于医院场景下的配送、运输业务；我国华大智造研发的远程
-超声检测系统\ref{fig:huada}，该系统在新冠疫情期间的武汉方舱医院内进行了应用测试\cite{wushengzheng20205g}，
-取得了可喜的进展。
+领域的创业公司和项目，致力于将移动操作机器人应用到医疗、服务、制造等场景下。例如Diligent Robotics
+研发的机器人护士Moxi\ref{fig:moxi}专注于医院场景下的配送、运输业务；欧盟发起的旨在推动工业环境
+中机器人与人写作的”第二双手“（SecondHand）项目的一期项目成果，AMRAR-6机器人（如图~\ref{fig:armar6}）
+能够在工业环境下与工人协作完成物品的搬动、维修等任务。
 
 \begin{figure}
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{moxi.jpg}
+  \includegraphics[height=4.2cm]{moxi.jpg}
   \caption{Moxi机器人护士}
   \label{fig:moxi}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{huada.png}
-  \caption{华大智造的远程超声检测机器人}
-  \label{fig:huada}
+  \includegraphics[height=4.2cm]{armar6.jpeg}
+  \caption{ARMAR-6仿人机器人}
+  \label{fig:armar6}
 \end{subfigure}%
+\caption{国内外创业公司研发的医疗移动操作机器人}
 \end{figure}
 
 除上述两例面向特定任务的移动机器人外，产业界还有一部分产品定位为“仿人”的具有社交属性的服务
@@ -361,15 +388,15 @@ MIT AI Lab设计了被成为“MIT arm”的机械臂并在一些公司的支持
 
 \begin{figure}
 \centering
-\begin{subfigure}{.6\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{img_seg.jpg}
+  \includegraphics[height=4cm]{img_seg.jpg}
   \caption{基于图片的物品分割识别}
   \label{fig:img_seg}
 \end{subfigure}%
-\begin{subfigure}{.4\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{pc_seg.jpeg}
+  \includegraphics[height=4cm]{pc_seg.jpeg}
   \caption{基于点云的物品分割效果}
   \label{fig:pc_seg}
 \end{subfigure}
@@ -399,14 +426,15 @@ SLAM主要以产出2D地图和位姿为主，其算法结果可视化效果大�
   \includegraphics[height=3.5cm]{vins.jpeg}
   \caption{VINS-Mono}
 \end{subfigure}
-\begin{subfigure}{.5\textwidth}
+\\
+\begin{subfigure}{.59\textwidth}
   \centering
-  \includegraphics[height=3cm]{svo.jpg}
+  \includegraphics[height=3.2cm]{svo.jpg}
   \caption{SVO}
 \end{subfigure}
-\begin{subfigure}{.5\textwidth}
+\begin{subfigure}{.4\textwidth}
   \centering
-  \includegraphics[height=3cm]{dso.jpeg}
+  \includegraphics[height=3.2cm]{dso.jpeg}
   \caption{DSO}
 \end{subfigure}
 \caption{基于视觉的各种SLAM算法效果图}
@@ -416,14 +444,14 @@ SLAM主要以产出2D地图和位姿为主，其算法结果可视化效果大�
 
 \begin{figure}
 \centering
-\begin{subfigure}{.6\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{cartographer.jpg}
+  \includegraphics[height=3.7cm]{cartographer.jpg}
   \caption{雷达生成2D地图的可视化效果}
 \end{subfigure}%
-\begin{subfigure}{.4\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{cartographer3d.jpg}
+  \includegraphics[height=3.7cm]{cartographer3d.jpg}
   \caption{多线激光雷达生成的3D效果图}
 \end{subfigure}
 \caption{基于雷达的SLAM算法效果图}
@@ -450,14 +478,14 @@ SLAM主要以产出2D地图和位姿为主，其算法结果可视化效果大�
 
 \begin{figure}
 \centering
-\begin{subfigure}{.6\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{moveit.png}
+  \includegraphics[height=4cm]{moveit.png}
   \caption{MoveIt!工作时的可视化窗口}
 \end{subfigure}%
-\begin{subfigure}{.4\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[height=3.5cm]{vrep.jpeg}
+  \includegraphics[height=4cm]{vrep.jpeg}
   \caption{V-REP可视化窗口}
 \end{subfigure}
 \caption{开源的机械臂规划框架}
@@ -514,161 +542,6 @@ RoboCup@Home组委会中，设有专门的任务制定部门Technical Committee�
 本章系统的介绍了移动操作机器人的基本定义和国内外研究、应用现状。后续章节将对本文的
 主要工作——Tinker移动操作机器人进行介绍，详细的给出Tinker机器人的系统搭建，定位
 导航算法的实现与调试，机械臂控制及相应的视觉算法实现以及各部分的版本迭代经过。
-
-\iffalse
-\section{Tinker机器人的设计目标}
-
-清华大学未来机器人团队成立于2012年，旨在帮助对机器人领域各个方面感兴趣的
-同学提升技术水平，增进校内交流，提供必要的设施支持，搭建一个校内的，开放有趣的机器人
-交流平台。随着团队的不断发展壮大，未来机器人团队逐渐积累了相当一批技术人才，并且开始有
-机会参于国际比赛。其中Tinker机器人作为团队的主要开发项目，每年固定参加著名的RoboCup
-比赛@HOME分赛场\cite{wisspeintner2009robocup}。
-
-作为清华校内机器人方向最具影响力的学生社团，未来机器人团队在促进校内机器人相关领域的
-社区发展，提高同学们的技术水平方面起到了重要影响。其中Tinker作为未来机器人团队的重要
-支撑项目，在凝聚团队，提升技术水平，扩大队员眼界方面起到了重要的作用。并且Tinker本身
-的技术迭代和技术积累也对校内科创发展起到了极大的推动作用，这些珍贵的技术经验不仅惠及
-了未来机器人团队内部成员，也广泛的影响了校内科创领域的许多组织。
-
-\begin{figure}
-  \centering
-  \includegraphics[width=.4\linewidth]{tinker_overview.jpg}
-  \caption{Tinker外观}
-  \label{fig:tinker_overview}
-\end{figure}
-
-
-\section{RoboCup@Home简介}
-
-RoboCup@Home作为机器人领域的国际顶级赛事，旨在帮助提升机器人在复杂的开放环境中的表现，
-促使家庭服务型机器人行业的发展。RoboCup@Home赛场分为三个联盟：Open Platform League
-(OPL)，Domestic Standard Platform (DSPL)，Socal Standard Platform League
- (SSPL)。
-
-三大赛事联盟中DSPL与SSPL均指定机器人的比赛，开发者不允许使用除特定机器人之外的任何机器人
-参赛，且不允许替换、改装、外挂任何除机器人本身带有的部件，这两个联赛旨在促进社区内对相关
-算法及软件工程的提升。其中DSPL规定使用Toyota Human Support Robot (HSR)\cite{toyota_hsr}
-机器人，SSPL规定使用Softbank Robotics Pepper\cite{pandey2018mass}机器人。两款
-机器人如图\ref{fig:hsr_pepper}所示。
-
-
-OPL为开放平台比赛，参赛者必须自行设计搭造参赛机器人，并且为机器人编写特定的软件完成比赛
-中制定的任务。OPL旨在通过开放的硬件要求培养机器人领域结构、硬件相关的人才，提升各个高校
-和组织中的硬件设计能力，并探索结构、硬件方面的更多可能性。Robocup@Home自2009年开始举办，
-多年的比赛中OPL赛场中涌现了大量的优秀机器人设计作品，Tinker即为其中优秀的一员。除Tinker
-外，还有homer@ UniKoblenz\cite{memmesheimer2017homer}，Pumas\cite{savage2013pumas}，
-CATIE Robotics\cite{fabre2018catie}等一批外观独特，功能强大的参赛作品出现，如图\ref{fig:other_teams}。
-
-Robocup@Home比赛每年举行一次，举行地点在国际几大城市巡回举办，由高校或者相关组织承办。
-通常比赛分为3个stage，每个stage设有若干任务，参赛队伍一次完成任务，根据完成程度和完成时
-的表现（速度，流畅性等等）按点得分，分数靠前的队伍可以获得晋级资格，进入下一stage。stage I
-为基础功能比赛，主要考察避障导航、抓取、识别、语音交互等基础功能，辅以合理的机器人软件控制
-程序即可完成，这一个stage主要考察机器人基本的软硬件设计的自恰性及稳定性，相当多新手队伍会
-在stage I直接淘汰。
-
-stage II的任务内容同stage I基本相当，但是难度会更高，逻辑也更复杂，特别的，在近几年的比赛中，
-增加了General Purpose Service Robot（GPSR）任务，即裁判对机器人下达任意在Robocup@Home
-赛场上曾经出现过的任务，考察机器人的完成情况，这一任务旨在帮助参赛者更好的构建机器人控制
-软件，为家用机器人在真实场景下的应用做铺垫。
-
-Final stage为两个得分最高的团队关于冠军奖项的争夺，每年的任务并不固定，2020年组委会
-将送餐机器人作为Final Stage的考察目标，要求参赛队伍在一个嘈杂的餐厅环境中将食物托盘
-送到某一个特定食客手上，并完成必要的交互。
-
-
-\section{RoboCup@Home比赛规则介绍}
-
-经过多年的发展RoboCup@Home已经培育起一个完善的社区，每年RoboCup@Home的比赛任务
-即由社区相关人员协助商议决定，RoboCup@Home组委会共同维护一份RuleBook\cite{rulebook}
-，组委会成员
-使用GitHub完成RuleBook的编写任务，该仓库是完全开放且欢迎参赛者提交修改与贡献的。
-RoboCup@Home组委会中，设有专门的任务制定部门Technical Committee（TC），这部分成员
-大都有深厚的相关从业背景和多年的研究经验，另外有一部分成员来自各个主力参赛队伍的
-核心开发人员（比如笔者作为Tinker机器人的主要程序员参与了2020年的TC工作），以
-确保比赛规则同时兼顾学科研究热点和可完成性。
-
-随着机器人行业相关技术的不断发展，RuleBook中的任务也在每年更新，并且向着越来越复杂、
-越来越贴近真实生活场景的方向演进。在多年的比赛中，组委会在任务内容、任务形式上也作出
-了很多改进与尝试，2019年的RoboCup@Home比赛就及其大胆的将任务数量进行了爆炸式的扩容，
-尝试了很多新的复杂的任务，其中有一些被证明并不成功，因此2020年的规则制作过程中又将
-不合理的任务去除，将任务数量固定为Stage I 5个，Stage II 4个。
-
-\subsection{RoboCup@Home经典任务分析}
-
-
-
-
-\section{Tinker的历史版本}
-
-在近5年的参赛过程中，Tinker机器人经过机器人队几代同学的不断开发，经历了若干次迭代，
-其硬件设计、软件架构、传感器使用、方案选择都发生了本质的变化。在Tinker不断迭代的
-过程中，机器人队也积累了大量的相关经验和教训，培养出了一代代机器人相关的人才。
-
-早期机器人团队技术实力差资金紧张，因此我们自制了整个机器人参加比赛。当时的机器人如图
-\ref{fig:old_tinker}所示。当时的虽然工艺粗糙，精度很低，但是辅以合适的
-软件算法和恰当的策略，仍然在RoboCup的赛场上取得了不错的成绩。当时的队员们如今有的
-已经走上工作岗位，有的还留在学校继续攻读更高的学位，都在各自的领域中继续发挥自己的
-能量。
-
-
-\begin{figure}[H]
-\centering
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.6\linewidth]{old_tinker1.jpg}
-  \caption{早期Tinker侧视图}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.6\linewidth]{old_tinker2.jpg}
-  \caption{早期Tinker主视图}
-\end{subfigure}
-\begin{subfigure}{.8\textwidth}
-  \centering
-  \includegraphics[width=.7\linewidth]{old_tinker3.jpg}
-  \caption{早期Tinker在赛场上}
-\end{subfigure}
-\caption{RoboCup@Home指定机器人，左HSR 右Pepper}
-\label{fig:old_tinker}
-\end{figure}
-
-经过几年的积累，机器人团队于2019年对Tinker进行了彻底的改装，包括
-使用市售成品机械臂及夹爪、使用更高性能的笔记本个更高性能的电机等等
-改造，外观如图\ref{fig:tinker1}。硬件的大幅改进对机器人开发带来
-了极大的冲击，新版Tinker最初
-的很多设计并不合适，因此经过2019年RoboCup@Home比赛后，我们又对Tinker
-进行了一次大规模的改装。第二次改装吸取了前面的教训，大幅裁剪了很多
-冗余设计，改良了供电和控制电路方案。在软件上也有诸多变化，一方面
-固化了许多经过前人验证的优良开发范式，一方面积极缩减代码依赖，在
-轻量化和稳定性方面不断提高，以争取更好的赛场表现。改装后的Tinker外观
-如图\ref{fig:tinker2}所示。
-
-\begin{figure}
-\centering
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.6\linewidth]{tinker1.png}
-  \caption{改装Tinker 1.0}
-  \label{fig:tinker1}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.6\linewidth]{tinker2.jpg}
-  \caption{改装Tinker 2.0}
-  \label{fig:tinker2}
-\end{subfigure}
-\caption{新版Tinker二次改装前后的外观，左改装前，右改装后}
-\label{fig:tinker_new}
-\end{figure}
-
-
-
-
-\fi
-
-
-
-
 
 
 

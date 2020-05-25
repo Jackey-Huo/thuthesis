@@ -1,9 +1,9 @@
 \chapter{机械手臂的操作控制}
-\label{cha:chapter04}
+\label{cha:arm}
 
 机械臂的控制与规划在多模态机器人的灵巧操作领域占有重要地位，同传统的工业机械臂不同，
-多模态机器人的机械臂控制并不是基于示教和硬编码，而是结合了视觉检测、识别以及动态
-的规划算法实现的。期开发涉及传统视觉、点云分割，现代计算机视觉识别以及3维地图的维护，
+多模态机器人的机械臂控制并不是基于示教和硬编码，而是结合了视觉检测、识别以及规划算法
+实现的。其开发涉及传统视觉、点云分割，现代计算机视觉识别以及3维地图的维护，
 逆运动学求解、轨迹生成等多个领域，逻辑复杂，编码量大。下面本文将分别阐述Tinker机器人
 视觉、运动规划方面使用的算法和相关工作，描述各个算法在实际场景下的应用表现，并对相关
 方向的读者给出可行的实践建议。
@@ -19,8 +19,8 @@
 \label{subsec:cam_intrinsic}
 
 为了将相机图像与真实世界联系起来，我们需要掌握基本的相机投影模型的知识。同时，由于工艺
-及装配误差的影响，摄像头采集到的图像会产生一定程度的畸变，下面本文将会分别介绍相机基本
-光学模型以及1种最常见的通用的畸变拟合模型。
+及装配误差的影响，摄像头采集到的图像会产生一定程度的畸变，下面本文将会分别介绍相机的基本
+光学模型以及1种最常见的畸变拟合模型。
 
 \noindent \textbf{无畸变针孔相机模型}
 
@@ -36,9 +36,10 @@
 
 考虑到相机将图片从CMOS中读取出来制成完整图片时，xy方向会有不同程度的拉伸，因此，我们分别
 使用两个参数$f_x, f_y$ 表示x方向和y方向上的光心，正常情况下，$f_x f_y$ 即使相互不同也不应当
-相差太大。另外，在从相机坐标向图片坐标转换时，需要将像平面上的点统一平移一个便宜量，
-这样使得所有像点在图片中的坐标均大于0。因此，假设我们有一3维世界坐标点[X, Y, Z]，在
-图片中对应的图像坐标为[u, v]，则二者之间的转换可表示为：
+相差太大。另外，在从相机坐标向图片坐标转换时，需要将像平面上的点统一平移一个量，
+这样使得所有像点在图片中的坐标均大于0。因此，假设在相机坐标系内我们有一3维世界坐标点
+$M = [X, Y, Z]^T$，在
+图片中对应的图像坐标为$m = [u, v]^T, \breve{m} = [u, v, 1]^T$，则二者之间的转换可表示为：
 
 \begin{equation}
   \begin{cases}
@@ -50,58 +51,62 @@
 
 经过整理可得到较为方便书写的版本：
 
-$$
-\begin{bmatrix}
-u \\
-v \\
-1
-\end{bmatrix}
-= \frac{1}{Z}
-\begin{bmatrix}
-  f_x & 0   & c_x \\
-    0 & f_y & c_y \\
-    0 & 0   &   1
-\end{bmatrix}
-\begin{bmatrix}
-X \\
-Y \\
-Z
-\end{bmatrix}
-$$
+\begin{equation}
+  \begin{aligned}
+    \begin{bmatrix}
+      u \\
+      v \\
+      1
+    \end{bmatrix}
+    &= \frac{1}{Z} K M \\
+    &= \frac{1}{Z}
+    \begin{bmatrix}
+      f_x & 0   & c_x \\
+        0 & f_y & c_y \\
+        0 & 0   &   1
+    \end{bmatrix}
+    \begin{bmatrix}
+      X \\
+      Y \\
+      Z
+    \end{bmatrix}
+  \end{aligned}
+\end{equation}
+
+其中K包含了单孔模型中相机的所有信息，因此一般又被成为相机的内参矩阵。
 
 \noindent \textbf{一种通用的相机校准模型——Kannala Brant模型}
 
-如\ref{subsec:pinhole_cam}所示，理想状态下，图片中记录下来的物体形状
+如~\ref{subsec:pinhole_cam}所示，理想状态下，图片中记录下来的物体形状
 应当与真实世界中的物体满足相似关系，但是由于相机透镜的工艺、相机装配
 时的误差，真实相机获取的图片中会发生畸变。Kannala Brant模型
 \cite{kannala2006generic} 提供了一种较为普遍且有效的畸变拟合手段，在
 工程实践中被广泛的应用在窄视角以及鱼眼相机的正畸过程中。
 
 按照畸变产生的效果来分，主要存在两种畸变，分别是径向畸变及切向畸变。
-
 径向畸变产生的主要原因为相机透镜的折射率无法做到完全一致，径向畸变是
 以图像中心为中心，按点到中心的绝对距离r为半径对称分布的，一般来说，径向
-畸变有桶型和枕型两种，两种畸变如图\ref{fig:radial_distort}所示。尽管
+畸变有桶型和枕型两种，两种畸变如图~\ref{fig:radial_distort}所示。尽管
 两种径向畸变在表现上 不太一样，但是在使用Kannala Brant模型时，可以
 使用同一种近似手段来拟合两种畸变。
 
 \begin{figure}[h] % use float package if you want it here
   \centering
-  \includegraphics[width=240pt]{camera_distortion.jpg}
-  \caption{左桶型畸变 右枕型畸变}
+  \includegraphics[width=320pt]{camera_distortion.jpg}
+  \caption{左桶型畸变，右枕型畸变}
   \label{fig:radial_distort}
 \end{figure}
 
 切向畸变则是由于相机装配过程中，相机透镜平面与CMOS感光平面不完全平行造成
-的，具体造成原因如图\ref{fig:tangential_distort}所示。尽管在各种相机校准
+的，具体形成原因如图~\ref{fig:tangential_distort}所示。尽管在各种相机校准
 方法中，关于切向畸变 都有对应的处理手段，但是在实际工程应用中，由于切向
-畸变一般较小，影响也 较小，因此大多数情况下都不予处理。Tinker的标准
+畸变一般较小，影响也 较小，大多数情况下都不予处理。Tinker的标准
 校准流程中，对切向 畸变也不予处理。
 
 \begin{figure}[h] % use float package if you want it here
   \centering
   \includegraphics[width=300pt]{tangential_dist.png}
-  \caption{左正常装配结果 右有装配误差的装配结果}
+  \caption{左正常装配结果，右有装配误差的装配结果}
   \label{fig:tangential_distort}
 \end{figure}
 
@@ -112,17 +117,218 @@ Kannala Brant模型使用光线的入射角$\theta$对图片上对应点的径�
   r(\theta) = k_1\theta + k_2\theta^{3} + k_3\theta^{5} + k_4\theta^{7} + ...
 \end{equation}
 
-根据工程实践经验，使用KB模型校准时，将$k_1$取为1，并对
-拟合参数{k}取到5阶，即有效畸变参数为$[k_2, k_3, k_4, k_5]$。如图TODO为Tinker
-顶视摄像头校准前后的图片。
+根据工程实践经验，使用KB模型校准时，一般将$k_1$取为1，并对
+拟合参数{k}取到5阶，即有效畸变参数为$[k_2, k_3, k_4, k_5]$。
 
 \noindent \textbf{便捷的棋盘格标定——张正友标定法}
 
-张正友标定法是TODO
+张正友标定法~\ref{zhang2000flexible}是种使用方便，应用极其广泛的单摄像头内参标定算法，此标定
+法使用前文中提到的Kannala Brant模型，且忽略切向畸变。张正友标定法在使用时仅需执行下列几个
+简单的步骤：
 
-此标定法默认使用前文中提到的Kannala Brant模型，且忽略切向畸变。
+\begin{itemize}
+  \item 固定摄像头
+  \item 打印预先准备好的标定板，确认标定版的尺寸正确、表面平整
+  \item 将标定板放置于摄像头视野范围内，变换位置并不断拍摄图片，记录图片信息
+  \item 运行标定算法，得到相机内参
+\end{itemize}
 
-TODO：原理解释
+张正友标定法本质上是利用了标定板上特征点全部位于同一平面的约束：由于一个标定板上的特征点数目
+远大于相机内参和约束自由度的总和，因此可以大致估计出相机的内参；在此基础上，再使用最大似然的
+思想，最小化所有图片中所有特征点的重投影误差，即可得到精度较高的内参。
+
+我们设标定板上的特征点在世界坐标下的增广坐标为 $\tilde{M} = [X, Y, Z, 1]^T$ ，图片中的增广坐标为$\tilde{m} = [u, v, 1]^T$，世界坐标到相机坐标的位姿变换为$[R, t]$，相机内参矩阵为$K$，尺度因子
+为$s$（根据前文单孔成像原理的介绍，这里的s即为相机坐标下点的Z轴坐标），在不考虑
+畸变的情况下有：
+
+\begin{equation}
+  \begin{aligned}
+  	s \tilde{m} &= K 
+		\begin{bmatrix}
+			R & t
+		\end{bmatrix}
+		\tilde{M} \\
+	s
+  	\begin{bmatrix}
+  		u \\
+  		v \\
+  		1
+  	\end{bmatrix} &= 
+  	\begin{bmatrix}
+  		\alpha & \gamma & u_0 \\
+  		0      & \beta  & v_0 \\
+  		0      & 0      & 1
+  	\end{bmatrix}
+  	\begin{bmatrix}
+		R & t
+	\end{bmatrix}
+	\begin{bmatrix}
+		X \\
+		Y \\
+		Z \\
+		1
+	\end{bmatrix}
+  \end{aligned}
+\end{equation}
+
+由于世界坐标我们可以随意选择，因此我们可以将平面的约束条件直接设为$Z = 0$，那么有：
+
+\begin{equation}
+  \label{equ:cam}
+  \begin{aligned}
+	s
+  	\begin{bmatrix}
+  		u \\
+  		v \\
+  		1
+  	\end{bmatrix}
+  	&= K
+  	\begin{bmatrix}
+		r_1 & r_2 & r_3 & t
+	\end{bmatrix}
+	\begin{bmatrix}
+		X \\
+		Y \\
+		0 \\
+		1
+	\end{bmatrix} \\
+	&= K
+	\begin{bmatrix}
+		r_1 & r_2 & t
+	\end{bmatrix}
+	\begin{bmatrix}
+		X \\
+		Y \\
+		1
+	\end{bmatrix}
+  \end{aligned}
+\end{equation}
+
+我们设$H = \lambda K [r1, r2, t], H = [h_i, h_2, h_3]$，这里H可以看作标定板真实平面坐标
+与图片坐标之间的单应矩阵。将H带入式~\ref{equ:cam}，则有：
+
+\begin{equation}
+	\label{equ:solve_h}
+	s' \tilde{m} = H \tilde{M}
+\end{equation}
+
+H是一个3x3的矩阵，有9个元素，但由于H本身是up-to-scale的，因此可以看作有8个自由度。由于我们
+知道标定板的真实尺寸，以及标定板中每一个特征点的位置坐标，且世界坐标是我们自己选择的，
+我们可以轻易的得到$\tilde{M}$，而$\tilde{m}$是直接从图片中得到的，一般真实的标定板中的特征点数目都远大于8，因此可以通过式~\ref{equ:solve_h}直接求出H各个元素的值。
+
+求解出H后，继续考察式~\ref{equ:cam}，根据旋转矩阵的性质，应当有：
+
+\begin{equation}
+	\label{equ:const1}
+		h_1^T K^{-T} K^{-1} h_2 = 0
+\end{equation}
+
+\begin{equation}
+	\label{equ:const2}
+	h_1^T K^{-T} K^{-1} h_1 = h_2^T K^{-T} K^{-1} h_2
+\end{equation}
+
+为了方便下面的计算，我们设$B = K^{-T} K^{-1}$，则B应当是一个对称阵，我们可以根据标定板
+上特征点的约束逐个解出B的所有元素，然后反求出K的全部参数。继续推导，我们有：
+
+\begin{equation}
+  \begin{aligned}
+  	B &=
+  	\begin{bmatrix}
+  		B_{11} & B_{12} & B_{13} \\
+  		B_{12} & B_{22} & B_{23} \\
+  		B_{13} & B_{23} & B_{33}
+  	\end{bmatrix} \\
+  	b &=
+  	\begin{bmatrix}
+		B_{11} & B_{12} & B_{22} & B_{13} & B_{23} & B_{33}
+  	\end{bmatrix}
+  \end{aligned}
+\end{equation}
+
+\begin{equation}
+  \begin{aligned}
+  	h_i^T B h_j &= 
+  	\begin{bmatrix}
+  		h_{i1}h_{j1} & h_{i1}h_{j2} + h_{i2}h_{j1} & h_{i2}h_{j2} &
+  		h_{i1}h_{j3} + h_{i3}h_{j1} & h_{i3}h_{j2} + h_{i2}h_{j3} & h_{i3}h_{j3}
+  	\end{bmatrix}
+  	b \\
+  	&= v_{ij}^T b
+  \end{aligned}
+\end{equation}
+
+则带入约束式~\ref{equ:const1}、~\ref{equ:const2}，可以得到：
+
+\begin{equation}
+	\label{equ:const_final}
+	\begin{bmatrix}
+		v_{12}^T \\
+		(v_11 - v_22)^T
+	\end{bmatrix}
+	b = 0
+\end{equation}
+
+对于一个有n个特征点的标定板，每一个特征点可以组成一个式~\ref{equ:const_final}，则我们可以
+轻易的解出b中的每一个元素的值。b解出后，K中的每一个参数都可以通过b的元素唯一的反算出来，其具体
+形势可见~\cite{zhang2000flexible}这里不再描述。
+
+下面我们考虑畸变参数。通常我们假设畸变是比较小的（当然，这一假设很多时候都不怎么对），那么对于
+一个在相机坐标系下真实位置为$[\breve{x}, \breve{y}, \breve{z}]$的点，其畸变后的坐标为
+$[x, y, z]$，则在对径向畸变做二阶近似的情况下，我们有：
+
+\begin{equation}
+  \begin{aligned}
+  	\breve{x} &= x + x[k_1(x^2 + y^2) + k_2(x^2 + y^2)^2] \\
+  	\breve{y} &= y + y[k_1(x^2 + y^2) + k_2(x^2 + y^2)^2]
+  \end{aligned}
+\end{equation}
+
+那么投影到图片坐标中，应当有
+
+\begin{equation}
+  \begin{aligned}
+  	\breve{u} &= u + u[k_1(x^2 + y^2) + k_2(x^2 + y^2)^2] \\
+  	\breve{v} &= v + v[k_1(x^2 + y^2) + k_2(x^2 + y^2)^2]
+  \end{aligned}
+\end{equation}
+
+由前文的推导我们可以知道，当我们解出了单应矩阵H、且知道标定板的真实尺寸时，其实每一个特征点
+在相机坐标下的位置就已经得到了，整理前式，可得
+
+
+\begin{equation}
+	\label{equ:dist}
+	\begin{bmatrix}
+		(u - u_0)(x^2 + y^2) & (u - u_0)(x^2 + y^2)^2 \\
+		(v - v_0)(x^2 + y^2) & (v - v_0)(x^2 + y^2)^2
+	\end{bmatrix}
+	\begin{bmatrix}
+		k_1 \\
+		k_2
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\breve{u} - u \\
+		\breve{v} - v
+	\end{bmatrix}
+\end{equation}
+
+实际计算中，可将各个特征点的信息带入求得最小二乘意义下的$[k_1, k_2]$的解，之后将这个解
+同前文所述的H以及K的各个参数作为优化处置，共同求解一个最小化重投影问题：
+
+\begin{equation}
+	\sum_{i=1}^{n}\sum_{j=1}^{m} \| m_{ij} - \breve{m}(K, k_1, k_2, R_i, t_i, M_j)\|^2
+\end{equation}
+
+上式的意义为，对于有n张图片，每张图片m个特征点的标定问题，对于每一张图片的每一个特征点$m_{ij}$，
+计算其真实坐标点到图片平面的投影$\breve{m}(K, k_1, k_2, R_i, t_i, M_j)$，并对两者的误差进行
+优化，实践中我们一般使用Levenberg-Marquardt方法来求解。
+
+张正友标定法给出了非常方便的单一摄像头内参标定方法，但是在实践中，有时我们不但需要准确的摄像头内参校准，
+还需要对不同传感器进行时间对齐，这项技术目前已经有非常成熟的发展，如文\cite{furgale2013unified, furgale2012continuous}所述，基于这项技术的开源标定库Kalibr\cite{rehder2016extending}在学术界
+和工业界都有广泛的应用。对于多模态移动机器人来说，有时候也需要基于时间对齐的标定技术，但由于其本身内容
+较多，这里不再另外介绍。
 
 \subsection{摄像头外参标定（手眼标定）}
 
@@ -175,16 +381,24 @@ Kinect就是一个典型的的eye-on-base安装的摄像头。典型的eye-on-ba
 
 \begin{figure}[h] % use float package if you want it here
   \centering
-  \includegraphics[width=320pt]{aruco.jpg}
+  \includegraphics[width=300pt]{aruco.jpg}
   \caption{Aruco码的三维定位效果，图片来源\cite{aruco}}
   \label{fig:aruco}
 \end{figure}
 
-我们先来分析eye-on-base的情况，如图TODO所示，对于一个相机相对机械臂底盘安装的模型来说，应当有:
+我们先来分析eye-on-base的情况，如图~\ref{fig:hand_eye}所示，对于一个相机相对机
+械臂底盘安装的模型来说，应当有:
 
 \begin{equation}
   T_{cam\_aruco} * T_{aruco\_hand} * T_{hand\_base} = T_{cam\_base}
 \end{equation}
+
+\begin{figure}[h] % use float package if you want it here
+  \centering
+  \includegraphics[width=300pt]{hand-eye.png}
+  \caption{手眼标定模型示意图}
+  \label{fig:hand_eye}
+\end{figure}
 
 其中$T_{cam\_aruco}$代表从相机光心到Aruco码中心的坐标变换，$T_{aruco\_hand}$代表
 Aruco码中心到机械臂末端的变换，因为Aruco码并不是精确放置的这部分我们通常既不知道，也不关心，
@@ -211,6 +425,7 @@ Aruco码中心到机械臂末端的变换，因为Aruco码并不是精确放置�
 \begin{equation}
   T_{base\_hand}^{(2)} * T_{base\_hand}^{(1) -1} * T_{base\_cam}= 
   T_{base\_cam} * T_{cam\_aruco}^{(2)}  * T_{cam\_aruco}^{(1) -1} 
+\label{equ:eye_on_base}
 \end{equation}
 
 由于$T_{case\_hand}$和$T_{cam\_aruco}$都是由测量获得，每次的结果也不一样，则
@@ -218,10 +433,23 @@ $T_{case\_cam}$的求解问题就被简化成了经典的三维欧氏流型上�
 这种问题有固定的处理方式，如\cite{park1994robo}所述，还有完备的数学手段通过
 使用统计手段增加测量组数以提高精度\cite{tsai1989new}。
 
+对于eye-on-hand的情况，我们同样可以仿照上文建立坐标变换方程，经过整理可以得到
+约束关系为：
+
+\begin{equation}
+  T_{base\_hand}^{(2) -1} * T_{base\_hand}^{(1)} * T_{hand\_cam}= 
+  T_{hand\_cam} * T_{cam\_aruco}^{(2)}  * T_{cam\_aruco}^{(1) -1} 
+\label{equ:eye_on_hand}
+\end{equation}
+
+可以看到，上式与~\ref{equ:eye_on_base}的形式非常相似，只是$T_{base\_hand}$
+为前式的逆，因此在实际操作中，两种标定类型通常共用一套求解程序，只是在获取base到
+hand的参数时将顺序置换一下。
+
 为方便机器人的组装与调整，Tinker团队为其摄像头的手眼标定流程开发了自动化控制程序。
 标定头部相机时，机器人将aruco码直接夹在夹爪末端，以一定概率拉取仓库中硬编码好的
 标定位姿或者随机生成位姿，不断重复记录数据并且解算，得到头部相机的外参；标定机器人
-腕部相机时，机器人直接将码放置在桌面上，如前问所示不断变换位姿记录数据，完成标定
+腕部相机时，机器人直接将码放置在桌面上，如前文所示不断变换位姿记录数据，完成标定
 流程。每次机器人各部件位置调整后，只需一键运行标定程序，机器人即可自动完成标定程序，
 省时省力，如图~\ref{fig:tinker_calib} 机器人在执行自动标定任务。
 
@@ -235,9 +463,9 @@ $T_{case\_cam}$的求解问题就被简化成了经典的三维欧氏流型上�
 
 \section{视觉定位与识别}
 
-对于多模态灵巧操作机器人来说，视觉功能是非常重要的。在实际控制中，我们通常将物品的定位与识别
-划分为两个不同的部分，他们对应的后续处理也不同：视觉识别主要解决的这个东西是什么、可不可以抓、
-抓了之后怎么办；而视觉定位则需要告诉后面的程序当前目标在三维空间的什么位置，它是什么形状，以
+对于多模态灵巧操作机器人来说，视觉功能非常重要。在实际控制中，我们通常将物品的定位与识别
+划分为两个不同的部分，他们对应的后续处理也不同：视觉识别主要解决这个东西是什么、可不可以抓、
+抓了之后怎么办的问题；而视觉定位则需要告诉后面的程序当前目标在三维空间的什么位置，它是什么形状，以
 什么姿态存在。
 
 一般情况下，多模态机器人获取物品位置信息的主要手段是RGBD相机，通过头部或者手部的RGBD摄像头，
@@ -256,12 +484,12 @@ $T_{case\_cam}$的求解问题就被简化成了经典的三维欧氏流型上�
 
 TODO：segmentation分步骤的演示图
 
-关于物品的识别技术，机器人领域几乎完全的仰仗着近些年来深度学习机器视觉的发展。对于摆放在
+关于物品的识别技术，机器人领域完全仰仗近些年来深度学习机器视觉的发展。对于摆放在
 桌面上离散分布的物品，我们一般使用Yolo、Fast-RCNN或者Mask-RCNN等等深度学习的检测算法
 进行分类。这些算法本身有开源实现且有经过大规模训练的初始参数，当机器人要面对特殊物品时，通常
 会针对这一类物品重制数据集，在原有模型的基础上进行Fine Tune，一般就可以获得非常好的效果。
 
-
+TODO：Fine tune过后物品的框图效果
 
 \section{抓取点选择}
 
@@ -273,6 +501,8 @@ TODO：segmentation分步骤的演示图
 设置为沿机器人与物品质心的连线且平行于桌面。但是复杂的抓取任务需要一些较为复杂的抓取点选择算法。
 下面介绍比较常用的二指夹爪抓取点算法GPD（Grasp Pose Detection）\cite{ten2017grasp}的实现方式。
 
+TODO：沿线抓取的效果图视频
+
 GPD算法的大致流程是：使用随机生成方式生成大量抓取位姿；之后使用训练过的CNN选择器筛选出其中较优
 的抓取位姿。算法中，CNN选择器的设置是比较考究的，对于每一个抓取位姿如图~\ref{fig:gpd}所示，
 算法都会在x，y，z方向分别
@@ -281,7 +511,7 @@ GPD算法的大致流程是：使用随机生成方式生成大量抓取位姿�
 
 \begin{figure}[h] % use float package if you want it here
   \centering
-  \includegraphics[width=340pt]{gpd.png}
+  \includegraphics[width=300pt]{gpd.png}
   \caption{GPD将位姿输入CNN时的处理方式示意}
   \label{fig:gpd}
 \end{figure}
@@ -295,14 +525,22 @@ GPD算法的大致流程是：使用随机生成方式生成大量抓取位姿�
 
 \begin{figure}[h] % use float package if you want it here
   \centering
-  \includegraphics[width=340pt]{fa_grasp.png}
+  \includegraphics[width=300pt]{fa_grasp.png}
   \caption{无摩擦对心夹取（fractionless antipodal grasp）}
   \label{fig:fa_grasp}
 \end{figure}
 
 除了上文的GPD之外，一些基于吸盘的抓取点选择算法也广受关注，吸盘或者吸盘夹爪配合法在物流分捡中有比
-移动机器人方向更加广泛的应用。今年来，一些基于CNN生成吸取点的算法广受关注，如在Amazon Picking 
-Challenge中由MIT-Printceton队开发的吸取点生成算法\cite{Rodriguez2017Robotic}就取得了令人瞩目的成绩。
+移动机器人方向更加广泛的应用。近年来，一些基于CNN生成吸取点的算法广受关注，如在Amazon Picking 
+Challenge中由MIT-Printceton队开发的兼顾抓取点与吸取点生成的算法\cite{zeng2018robotic}就
+取得了令人瞩目的成绩（如图~\ref{fig:mit_princeton}，MIT-Princeton的算法在赛场上）
+
+\begin{figure}[h] % use float package if you want it here
+  \centering
+  \includegraphics[width=340pt]{mit_princeton.jpeg}
+  \caption{MIT-Princeton机器人夹起一条毛巾}
+  \label{fig:mit_princeton}
+\end{figure}
 
 \section{机械臂运动规划}
 
@@ -327,7 +565,7 @@ Challenge中由MIT-Printceton队开发的吸取点生成算法\cite{Rodriguez201
 
 \begin{figure}[h] % use float package if you want it here
   \centering
-  \includegraphics[width=240pt]{ik.png}
+  \includegraphics[width=280pt]{ik.png}
   \caption{一个简单的IK求解例子}
   \label{fig:ik}
 \end{figure}
@@ -346,7 +584,7 @@ RRT\cite{lavalle1998rapidly}算法。使用RRT算法前需要对整个求解空�
 
 \begin{figure}[h] % use float package if you want it here
   \centering
-  \includegraphics[width=240pt]{rrt.png}
+  \includegraphics[width=320pt]{rrt.png}
   \caption{RRT算法中树生长的过程\cite{kuffner2000rrt}}
   \label{fig:rrt}
 \end{figure}
@@ -368,13 +606,17 @@ RRT\cite{lavalle1998rapidly}算法。使用RRT算法前需要对整个求解空�
 
 \begin{figure}[h] % use float package if you want it here
   \centering
-  \includegraphics[width=240pt]{moveit_viz.png}
+  \includegraphics[width=300pt]{moveit_viz.png}
   \caption{MoveIt!的可视化效果}
   \label{fig:moveit_viz}
 \end{figure}
 
 
+\section{本章小结}
 
+本章完整的给出了从摄像头标定到目标物体检测、定位、识别所需要的各项技术，并详细的介绍了机械臂控制
+的主要流程与关键技术。每一个关键的技术节点都详细的给出了Tinker机器人使用的具体方案，给出了
+复杂场景下移动操作机器人机械臂功能控制的完整技术描述。
 
 
 
