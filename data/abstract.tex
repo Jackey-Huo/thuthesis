@@ -4,39 +4,41 @@
 
 \begin{abstract}
 
-  随着计算机技术的飞速发展以及智能制造水平的不断提高，智能机器人成为新的学科热点。其中家用智
-  能机器人涉及领域众多，结构复杂，软硬件设计难度极大，且融合了机器人及相关行业的多项技术，
-  具有极大的研究价值。
-  
-  本文介绍了清华大学未来机器人团队设计实现的多功能家用探索型机器人Tinker。本文以Tinker
-  的设计与功能为核心，系统的介绍了智能机器人领域现阶段广泛使用的各种软硬件解决方案，
-  并分析了在过去的几年时间中未来机器人团队在开发过程中积累的经验与教训。
-  
-  本文还详细的给出了Tinker机器人实现的各项功能，详尽的给出了各个功能实现过程中的
-  演进过程、最终方案、性能开销和大致的软硬件成本，并且辅以全面的图片、视频资料。
+  近些年随着机器人技术发展和应用场景的不断增多，移动型灵巧操作机器人逐渐成为了当前的研究
+  热点。它不仅具备了灵活的移动能力，而且可以完成灵巧操作任务。本文开发了一款Tinker移动操
+  作机器人系统，由7-DoF机械臂、二指自适应夹爪和麦克纳姆轮全向底盘组成。本文研究了机器人即时定位
+  与建图技术，以Cartographer为基础搭建了自动导航避障的算法框架，开发了基于ROS的机器人
+  路径规划与控制的软件模块。研究了机械手臂的操作控制方法。结合张正友视觉标定算法实现了相机
+  的参数标定，并提出了一种快捷有效的自动化手眼标定方法。同时利用物体识别定位和抓起点识别算
+  法，搭建完成了机器人灵巧操作的软件系统。最后在实际系统验证了方法的有效性。
   
   % 关键词用“英文逗号”分隔
   \thusetup{
-    keywords = {Tinker, Robotics Learning, Domestic service robotics},
+    keywords = {Tinker, Robotics Learning, Domestic service robotics,
+                Mobile Manipulation Robot, Mobile Manipulator},
   }
 \end{abstract}
 
 \begin{abstract*}
 
-  Intelligent robot in domestic environment is regard of utmost importance in the field of
-  industrial and every-day life. Therefore many efforts have recently focused on
-  this problem.
-
-  In this paper, we describe the joint effort of the Team of Tinker in the past
-  year. RoboCup@HOME consists of a settled set of benchmarking tests that cover multiple
-  skills needed by domestic service robots. We present the hardware chosen, the approaches
-  used and the system established to accomplish the tasks assigned in the paper, and also
-  improvements achieved since RoboCup@HOME 2019. It includes a framework for behavior
-  modeling and communication employed between robot and humans, as well as the policy
-  decisions made within the robot itself. We describe our main contributions in arranging
-  the logical model, integrated with various open source algorithm.
+  In recent years, with the development of robot technology and the continuous
+  increase of application scenarios, mobile manipulation robots have gradually
+  become the current research hotspots. It has flexible mobility, and can also
+  perform smart manipulation tasks. In this paper, we propose a new mobile
+  manipulation robot: Tinker. As a robot system, it is composed of a 7-DoF
+  robotic arm, a two-finger adaptive gripper and an omnidirectional chassis of
+  Mecanum wheels. This paper developed an software framework for automatic navigation
+  and obstacle avoidance based on Cartographer, and a robot control
+  system for path planning and arm control based on ROS was developed. This paper
+  studied the manipulation control method of multiple freedom robot arm. In this
+  paper, an automatic hand-eye calibration framework is present. Meanwhile, a
+  software system of computer vision based on RGB camera and point cloud data
+  combined with robot arm control and grasp point selection
+  is designed. Finally, the effectiveness of the method is verified in the real
+  world.
 
   \thusetup{
-    keywords* = {Tinker, Robotics Learning, Domestic service robotics},
+    keywords* = {Tinker, Robotics Learning, Domestic service robotics,
+                 Mobile Manipulation Robot, Mobile Manipulator},
   }
 \end{abstract*}

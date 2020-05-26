@@ -26,7 +26,7 @@ SLAM方案和使用心得。
 合适的特征提取算法与最优化工具以及词袋算法，都是相当晚近才完全成熟的，这在一定程度上拖后了视觉SLAM
 技术的发展。
 
-\noindent \textbf{雷达SLAM技术}
+\subsubsection{雷达SLAM技术}
 
 最早被广泛接受的雷达SLAM算法应当是Gmapping\cite{grisettiyz2005improving, grisetti2007improved}。
 这是一种基于Rao-Blackwellized滤波的粒子滤波算法，它的输入信息为单线激光雷达和里程计，输出为一张2维
@@ -49,7 +49,7 @@ SLAM方案和使用心得。
 
 雷达SLAM领域十分活跃，有相当多使用不同传感器、不同求解方式的算法不断出现，例如使用单线激光雷达与IMU的
 Hector SLAM\cite{KohlbrecherMeyerStrykKlingaufFlexibleSlamSystem2011}，适用于多线激光雷达
-的LOAM\cite{zhang2014loam}等等，这里不一一介绍。
+的LOAM\cite{zhang2014loam}等。
 
 近几年最引人注意的成果是google于2016年发布的Cartographer
 \cite{hess2016real}，同此前的很多雷达定位算法不同，Cartographer的基本求解思想是基于最优化理论的，
@@ -58,8 +58,8 @@ Hector SLAM\cite{KohlbrecherMeyerStrykKlingaufFlexibleSlamSystem2011}，适用�
 Cartographer的算法框架。Cartographer同时支持2D与3D激光雷达，且
 支持多个雷达组合使用以及雷达与IMU的融合，且原生支持地图重定位和分阶段建图，功能十分全面。早期的Cartographer虽然提供ROS的接口，但是其地图格式没有同ROS中主流的Costmap对接起来，随着社区的发展，将Cartographer同ROS
 Navigation Stack对接的轮子越来越完善，Cartographer正在快速替代Gmapping成为开源机器人开发者最常
-使用的雷达定位算法。如图\ref{fig:cartographer_map}为Cartographer在德国博物馆使用单线激光雷达
-建图的结果。
+使用的雷达定位算法。如图\ref{fig:cartographer_map}为Cartographer在德国的Deutsches Museum使用
+单线激光雷达建图的结果。
 
 \begin{figure}[h] % use float package if you want it here
   \centering
@@ -81,7 +81,7 @@ Navigation Stack对接的轮子越来越完善，Cartographer正在快速替代G
 近几年随着Cartographer等等一些算法的不断出现，Ceres在业内的知名度越来越高，许多基于视觉的SLAM
 算法也开始使用Ceres作为优化核心。
 
-\noindent \textbf{视觉SLAM技术}
+\subsubsection{视觉SLAM技术}
 
 视觉SLAM技术的发展更为迅速。从方法上来说可以将视觉SLAM技术笼统的分为直接法、间接法还有半直接法。直接
 法是相对于间接法提出的，间接法是指算法在拿到图片后，首先对图片进行特征点提取，然后使用特征点进行后续
@@ -170,7 +170,7 @@ gmapping算法\cite{grisettiyz2005improving}，
 方面，我们使用基于蒙特卡罗的
 amcl算法\cite{fox2002kld}，两个算法同时工作时的可视化信息如图~\ref{fig:gmapping_amcl}。
 amcl需要在地图已经给出的情况下进行定位，在
-真实赛场上，比赛场景多数情况下是确定的，因此这套方案还基本可用，Tinker团队
+真实赛场上，比赛场景多数情况下是确定的，因此这套方案还基本可用，Tinker机器人
 会在开赛前对赛场进行扫描，将地图场景保存起来，之后比赛过程中单纯使用amcl
 进行定位。后期随着团队成员对这套定位算法越来越熟悉，我们会将场景内可能出现
 在单线雷达视野内的一切固定障碍的尺寸量下来，使用绘图软件对地图进行重建，然后
@@ -193,7 +193,7 @@ amcl需要在地图已经给出的情况下进行定位，在
 
 虽然上述方案在长时间内被证明是稳定可用的，但随着SLAM社区的不断发展，基于
 粒子滤波的定位建图算法已经过时了，尤其是Google开源其自主开发的Cartographer
-雷达建图定位算法\cite{hess2016real}之后，Tinker团队后期也将定位方案迁移为Cartographer+
+雷达建图定位算法\cite{hess2016real}之后，本工作后期也将定位方案迁移为Cartographer+
 ROS Navigation的模式，在更换建图定位算法之后，配合我们对Tinker硬件的二次
 改版，我们也将原有的2个单线雷达减少为一个，变动之后定位数据减少，运算效率也
 得到了提升。Cartographer的算法框架如图~\ref{fig:cartographer}所示。
@@ -201,7 +201,7 @@ ROS Navigation的模式，在更换建图定位算法之后，配合我们对Tin
 
 除了基于单线激光雷达的各种定位建图算法外，笔者还尝试了一些基于特征点的视觉SLAM
 方案，例如基于ORB特征点法的ORB-SLAM2（使用Kinect v2的RGB-D数据）\cite{mur2015orb}，
-ORB-SLAM2在室内环境中的可视化效果如图。。。所示。我们还测试了基于双目和IMU数据
+ORB-SLAM2在室内环境中的可视化效果如图TODO所示。我们还测试了基于双目和IMU数据
 融合的VINS-Fusion\cite{qin2018vins}算法，并且分析了两算法表现上的差异。
 
 ORB-SLAM2的算法框架如图~\ref{fig:orb_frame}所示，其获取到原始数据后，首先对左右
@@ -238,7 +238,7 @@ ROS的Navigation stack中提供了一整套导航避障的解决方案。其核�
 为：在当前位置向各个方向以不同速度发射模拟路径，并且按照这些路径是否经过障碍物、
 离目标路径的远近等等条件本别进行打分，选取分数最高的路径对应的速度极为dwa的输出
 结果~\ref{fig:dwa}。上述
-方案均为机器人导航领域较为经典且通用的方案，Tinker团队对上述算法进行了一些微调，以
+方案均为机器人导航领域较为经典且通用的方案，本工作对上述算法进行了一些微调，以
 使算法在Tinker平台上有更好的表现，如图~\ref{nav_costmap}所示为Tinker进行导航任
 务时可视化的调试信息。
 
@@ -346,9 +346,9 @@ $v_{O4x}, v_{O4y}$，整个底盘的速度可表示为$v_x, v_y, \omega_O$，麦
   \end{bmatrix}
 \end{equation}
 
-值得一提的是，Tinker团队不断探索发现，在底盘接受速度命令端加一个smoother，对临近的
+值得一提的是通过不断探索，作者发现：在底盘接受速度命令端加一个smoother，对临近的
 几帧速度命令进行一定程度的加权平滑（即一个一阶低通滤波器）~\ref{equ:filter}能够使
-机器人的运动性能得到质的提升。
+机器人的运动性能得到质的提升，本文使用的一阶低通滤波算法如下：
 
 \begin{equation}
   \label{equ:filter}
@@ -363,7 +363,7 @@ $v_{O4x}, v_{O4y}$，整个底盘的速度可表示为$v_x, v_y, \omega_O$，麦
 
 本章较为概括的描述了机器人定位导航领域的大致现状，并且选取了领域内具有划时代意义且目前依然
 使用广泛的几个算法进行重点介绍；同时，本章完整的给出了Tinker机器人移动定位导航方向使用的
-方案以及开发过程中的经验教训，很多细节值得相关方向的读者借鉴。
+方案以及开发过程中的经验教训。
 
 下一章，本文将介绍移动操作机器人的重点技术——视觉检测与机械臂规划。
 
