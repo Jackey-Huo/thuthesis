@@ -61,7 +61,7 @@ Navigation Stack对接的轮子越来越完善，Cartographer正在快速替代G
 使用的雷达定位算法。如图\ref{fig:cartographer_map}为Cartographer在德国的Deutsches Museum使用
 单线激光雷达建图的结果。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.95\textwidth]{cartographer.png}
   \caption{Cartographer的算法框架}
@@ -116,7 +116,7 @@ ORB-SLAM算法\cite{mur2015orb}发布时（2015年）在业界引起了很大的
 关键帧作为管理点的单位，因此很多算法的可视化效果都和此图差不多。
 
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.95\textwidth]{loop_closing.png}
   \caption{应用闭环约束前后的轨迹变化}
@@ -124,14 +124,14 @@ ORB-SLAM算法\cite{mur2015orb}发布时（2015年）在业界引起了很大的
 \end{figure}
 
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=300pt]{orb_viz.jpg}
   \caption{ORB-SLAM运行时的可视化效果}
   \label{fig:orb_viz}
 \end{figure}
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.95\textwidth]{orb_framework.png}
   \caption{ORB-SLAM2的算法框架}
@@ -154,7 +154,7 @@ VINS\cite{qin2018vins}算法大致比ORB-SLAM晚2-3年出现，诞生于香港�
 都应当是成立的；其次，有IMU数据的修正，算法理论上更加不容易失配，选择相对简单的策略也就是被允许的了。
 
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.95\textwidth]{vins_framework.png}
   \caption{VINS-Mono的算法框架}
@@ -200,8 +200,8 @@ ROS Navigation的模式，在更换建图定位算法之后，配合我们对Tin
 
 
 除了基于单线激光雷达的各种定位建图算法外，笔者还尝试了一些基于特征点的视觉SLAM
-方案，例如基于ORB特征点法的ORB-SLAM2（使用Kinect v2的RGB-D数据）\cite{mur2015orb}，
-ORB-SLAM2在室内环境中的可视化效果如图TODO所示。我们还测试了基于双目和IMU数据
+方案，例如基于ORB特征点法的ORB-SLAM2（使用Kinect v2的RGB-D数据）\cite{mur2015orb}
+。我们还测试了基于双目和IMU数据
 融合的VINS-Fusion\cite{qin2018vins}算法，并且分析了两算法表现上的差异。
 
 ORB-SLAM2的算法框架如图~\ref{fig:orb_frame}所示，其获取到原始数据后，首先对左右
@@ -239,11 +239,11 @@ ROS的Navigation stack中提供了一整套导航避障的解决方案。其核�
 离目标路径的远近等等条件本别进行打分，选取分数最高的路径对应的速度极为dwa的输出
 结果~\ref{fig:dwa}。上述
 方案均为机器人导航领域较为经典且通用的方案，本工作对上述算法进行了一些微调，以
-使算法在Tinker平台上有更好的表现，如图~\ref{nav_costmap}所示为Tinker进行导航任
+使算法在Tinker平台上有更好的表现，如图~\ref{fig:nav_costmap}所示为Tinker进行导航任
 务时可视化的调试信息。
 
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=1.\textwidth]{dwa.png}
   \caption{dwa算法示意图}
@@ -251,7 +251,7 @@ ROS的Navigation stack中提供了一整套导航避障的解决方案。其核�
 \end{figure}
 
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=1.\textwidth]{nav_costmap.png}
   \caption{进行导航任务时的地图与路径}
@@ -264,7 +264,7 @@ ROS的Navigation stack中提供了一整套导航避障的解决方案。其核�
 传统2轮底盘或者4轮阿克曼转向底盘相比更复杂一些。
 
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.95\textwidth]{mecanum.png}
   \caption{麦轮底盘（左）与麦轮放大图（右），图片来源\cite{mecanum}}

@@ -23,11 +23,12 @@
 光学模型以及1种最常见的畸变拟合模型。
 
 \subsubsection{无畸变针孔相机模型}
+\label{subsec:pinhole_cam}
 
 理想相机被认为是一个完美的小孔成像装置，如图\ref{fig:pinhole}所示所有光线均穿过相
 机透镜的光心，投影到像平面上。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=.7\linewidth]{pinhole.jpeg}
   \caption{小孔成像原理示意图}
@@ -90,7 +91,7 @@ $M = [X, Y, Z]^T$，在
 两种径向畸变在表现上 不太一样，但是在使用Kannala Brant模型时，可以
 使用同一种近似手段来拟合两种畸变。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=320pt]{camera_distortion.jpg}
   \caption{左桶型畸变，右枕型畸变}
@@ -103,7 +104,7 @@ $M = [X, Y, Z]^T$，在
 畸变一般较小，影响也 较小，大多数情况下都不予处理。Tinker的标准
 校准流程中，对切向 畸变也不予处理。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=300pt]{tangential_dist.png}
   \caption{左正常装配结果，右有装配误差的装配结果}
@@ -122,7 +123,7 @@ Kannala Brant模型使用光线的入射角$\theta$对图片上对应点的径�
 
 \subsubsection{便捷的棋盘格标定——张正友标定法}
 
-张正友标定法~\ref{zhang2000flexible}是种使用方便，应用极其广泛的单摄像头内参标定算法，此标定
+张正友标定法~\cite{zhang2000flexible}是种使用方便，应用极其广泛的单摄像头内参标定算法，此标定
 法使用前文中提到的Kannala Brant模型，且忽略切向畸变。张正友标定法在使用时仅需执行下列几个
 简单的步骤：
 
@@ -379,7 +380,7 @@ Kinect就是一个典型的的eye-on-base安装的摄像头。典型的eye-on-ba
 二维相机中的图像恢复出码中心相对相机光心的位姿。如图\ref{fig:aruco}所示，Aruco检测程序不单
 能准确的解算出码的三维位置，也可以求解出码的姿态。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=300pt]{aruco.jpg}
   \caption{Aruco码的三维定位效果，图片来源\cite{aruco}}
@@ -393,7 +394,7 @@ Kinect就是一个典型的的eye-on-base安装的摄像头。典型的eye-on-ba
   T_{cam\_aruco} * T_{aruco\_hand} * T_{hand\_base} = T_{cam\_base}
 \end{equation}
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=300pt]{hand-eye.png}
   \caption{手眼标定模型示意图}
@@ -430,7 +431,7 @@ Aruco码中心到机械臂末端的变换，因为Aruco码并不是精确放置�
 
 由于$T_{case\_hand}$和$T_{cam\_aruco}$都是由测量获得，每次的结果也不一样，则
 $T_{case\_cam}$的求解问题就被简化成了经典的三维欧氏流型上的$AX = XB$求解问题了，
-这种问题有固定的处理方式，如\cite{park1994robo}所述，还有完备的数学手段通过
+这种问题有固定的处理方式，如\cite{park1994robot}所述，还有完备的数学手段通过
 使用统计手段增加测量组数以提高精度\cite{tsai1989new}。
 
 对于eye-on-hand的情况，我们同样可以仿照上文建立坐标变换方程，经过整理可以得到
@@ -453,7 +454,7 @@ hand的参数时将顺序置换一下。
 流程。每次机器人各部件位置调整后，只需一键运行标定程序，机器人即可自动完成标定程序，
 省时省力，如图~\ref{fig:tinker_calib} 机器人在执行自动标定任务。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=340pt]{tinker_calib.png}
   \caption{Tinker在执行自动标定程序}
@@ -480,16 +481,54 @@ hand的参数时将顺序置换一下。
 要更加复杂一些。将桌子或者柜子平面所包含的点云去除后，我们可以接着利用桌子的相关参数，将
 桌面以上我们感兴趣的一小块区域裁剪出来。此时我们得到的点云就已经比较良好了，之后可以直接对物品
 进行聚类，或者使用视觉识别程序的结果将不同物品对应的框筛查出来再进行聚类，甚至利用类似Mask-RCNN
-等可以生成Mask Segment的技术直接将对应的点云抠出来，再做质心检测和三维重建。
+等可以生成Mask Segment的技术直接将对应的点云抠出来，再做质心检测和三维重建。如图~\ref{fig:segmentation}
+展示了该算法提取桌面物品的效果，图片中所示的点云使用realsense d435相机拍摄，但次算法
+对于大多数RGBD相机（包括Kinect v2）拍摄的数据都有很好的普试性。
 
-TODO：segmentation分步骤的演示图
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{seg_before.png}
+  \caption{分割前的点云}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=3.5cm]{seg_after.png}
+  \caption{提取完桌面物体的点云}
+\end{subfigure}
+\caption{手眼标定的典型安装方式，图片来源\cite{easy_handeye}}
+\label{fig:segmentation}
+\end{figure}
+
 
 关于物品的识别技术，机器人领域完全仰仗近些年来深度学习机器视觉的发展。对于摆放在
 桌面上离散分布的物品，我们一般使用Yolo、Fast-RCNN或者Mask-RCNN等等深度学习的检测算法
 进行分类。这些算法本身有开源实现且有经过大规模训练的初始参数，当机器人要面对特殊物品时，通常
 会针对这一类物品重制数据集，在原有模型的基础上进行Fine Tune，一般就可以获得非常好的效果。
+如图~\ref{fig:recognition}展示了Tinker在公开的Mask-RCNN模型参数基础上进行Fine tune
+之后，在不同场景和不同视角下对同一物品的分类表现。
 
-TODO：Fine tune过后物品的框图效果
+\begin{figure}
+\centering
+\begin{subfigure}{.33\textwidth}
+  \centering
+  \includegraphics[height=4.5cm]{recg1.jpg}
+  \caption{场景一}
+\end{subfigure}%
+\begin{subfigure}{.33\textwidth}
+  \centering
+  \includegraphics[height=4.5cm]{recg2.jpg}
+  \caption{场景二}
+\end{subfigure}
+\begin{subfigure}{.33\textwidth}
+  \centering
+  \includegraphics[height=4.5cm]{recg3.jpg}
+  \caption{场景三}
+\end{subfigure}
+\caption{Fine Tune过后对特定物品的识别效果}
+\label{fig:recognition}
+\end{figure}
 
 \section{抓取点选择}
 
@@ -501,15 +540,13 @@ TODO：Fine tune过后物品的框图效果
 设置为沿机器人与物品质心的连线且平行于桌面。但是复杂的抓取任务需要一些较为复杂的抓取点选择算法。
 下面介绍比较常用的二指夹爪抓取点算法GPD（Grasp Pose Detection）\cite{ten2017grasp}的实现方式。
 
-TODO：沿线抓取的效果图视频
-
 GPD算法的大致流程是：使用随机生成方式生成大量抓取位姿；之后使用训练过的CNN选择器筛选出其中较优
 的抓取位姿。算法中，CNN选择器的设置是比较考究的，对于每一个抓取位姿如图~\ref{fig:gpd}所示，
 算法都会在x，y，z方向分别
 投影，抽取出夹爪在这三个方向上平移时可以直接触碰到的物品的表面的点云投影到三个方向，制作成图片
 输入CNN网络中。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=300pt]{gpd.png}
   \caption{GPD将位姿输入CNN时的处理方式示意}
@@ -522,7 +559,7 @@ GPD算法的大致流程是：使用随机生成方式生成大量抓取位姿�
 是合理的，无摩擦对心夹取在人类动作中也非常常见，而且是夹起外形复杂的物品的有力保证。
 
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=300pt]{fa_grasp.png}
   \caption{无摩擦对心夹取（fractionless antipodal grasp）}
@@ -534,7 +571,7 @@ GPD算法的大致流程是：使用随机生成方式生成大量抓取位姿�
 Challenge中由MIT-Printceton队开发的兼顾抓取点与吸取点生成的算法\cite{zeng2018robotic}就
 取得了令人瞩目的成绩（如图~\ref{fig:mit_princeton}，MIT-Princeton的算法在赛场上）
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=340pt]{mit_princeton.jpeg}
   \caption{MIT-Princeton机器人夹起一条毛巾}
@@ -562,7 +599,7 @@ Challenge中由MIT-Printceton队开发的兼顾抓取点与吸取点生成的算
 可靠的方法，机器人领域也有一些可靠的开源方案可供使用，例如2008年发布的OpenRAVE库\cite{diankov2008openrave}
 就提供了鲁帮且全面的IK功能，经常被封装成插件应用到各大机械臂规划平台上。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=280pt]{ik.png}
   \caption{一个简单的IK求解例子}
@@ -581,7 +618,7 @@ RRT\cite{lavalle1998rapidly}算法。使用RRT算法前需要对整个求解空�
 在前文形成的图结构上维护一颗生成树，通过某种策略不断的扩展树上的节点直到达到目标位置，或者寻找失败，如图\ref{fig:rrt}
 描述了树生长过程中的形态。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=320pt]{rrt.png}
   \caption{RRT算法中树生长的过程\cite{kuffner2000rrt}}
@@ -603,7 +640,7 @@ RRT\cite{lavalle1998rapidly}算法。使用RRT算法前需要对整个求解空�
 本文给出的多模态机器人基于ROS平台进行开发，ROS下有一个生态比较完全的的机械臂控制框架MoveIt!\citep{chitta2012moveit}
 ，提供了IK、路径搜索平滑功能，以及完善的可视化调试接口，如图\ref{fig:moveit_viz}。
 
-\begin{figure}[h] % use float package if you want it here
+\begin{figure}[ht] % use float package if you want it here
   \centering
   \includegraphics[width=300pt]{moveit_viz.png}
   \caption{MoveIt!的可视化效果}
